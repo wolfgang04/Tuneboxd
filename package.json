@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "prestart": "kill-port 8080",
+    "start": "concurrently \"npm run dev --prefix client\" \"npm start --prefix server\""
+  },
+  "dependencies": {
+    "concurrently": "^9.0.1",
+    "kill-port": "^2.0.1"
+  }
+}
