@@ -1,7 +1,14 @@
-import SampleComponent from "../components/SampleComponent";
+
+import Navbar from "../components/Navbar";
+import Dashboard from './Dashboard';
 
 function App() {
-	return <SampleComponent />;
+  return (
+    <div>
+      <Navbar />
+      <Dashboard />
+    </div>
+  );
 }
 
 export default App;
