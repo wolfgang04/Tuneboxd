@@ -20,3 +20,19 @@ export const search = async (
 		return response.status(500).send("Error fetching search");
 	}
 };
+
+export const getGenres = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	try {
+		const res = await axios.get(
+			"https://api.spotify.com/v1/recommendations/available-genre-seeds",
+			{ headers: await getHeaders() }
+		);
+		return response.json({ ...res.data });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching genres");
+	}
+};
