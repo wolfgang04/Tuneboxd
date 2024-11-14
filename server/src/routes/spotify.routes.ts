@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getArtist } from "../controllers/spotify.controller";
+import { search } from "../controllers/spotify.controller";
 
 const router = Router();
 
-router.get("/artist", getArtist);
+router.get("/search", search);
 
 export default router;
