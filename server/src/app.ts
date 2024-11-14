@@ -4,6 +4,7 @@ import session from "express-session";
 import Redis from "ioredis";
 import RedisStore from "connect-redis";
 import userRoutes from "./routes/user.routes";
+import spotifyRoutes from "./routes/spotify.routes";
 
 const app: express.Application = express();
 
@@ -46,5 +47,6 @@ app.use(
 );
 
 app.use("/api/user", userRoutes);
+app.use("/api/spotify", spotifyRoutes);
 
 export default app;
