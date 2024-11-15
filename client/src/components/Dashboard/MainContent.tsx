@@ -1,5 +1,5 @@
 import React from 'react';
-import RecentListens from './RecentListens';
+import Boxbox from './Boxbox';
 import TopArtists from './TopArtists';
 import TopArtistsGrid from './TopArtistsGrid';
 import RecentListensGrid from './RecentListensGrid';
@@ -8,7 +8,7 @@ const MainContent: React.FC = () => {
   return (
     <section className="self-center mt-9 w-full max-w-[1521px] max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col">
-        <RecentListens />
+        <Boxbox />
         <TopArtists />
       </div>
       <div className="flex flex-wrap gap-5 justify-between mt-24 ml-10 max-w-full text-4xl font-bold text-black w-[1104px] max-md:mt-10">

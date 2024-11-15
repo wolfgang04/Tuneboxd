@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RecentListens: React.FC = () => {
+const Boxbox: React.FC = () => {
   return (
     <div data-layername="column" className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
       <div className="grow max-md:mt-3 max-md:max-w-full">
@@ -20,4 +20,4 @@ const RecentListens: React.FC = () => {
   );
 };
 
-export default RecentListens;
+export default Boxbox;
