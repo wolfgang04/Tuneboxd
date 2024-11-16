@@ -21,7 +21,6 @@ const GenreSong = () => {
 
   useEffect(() => {
     fetchSongs();
-    console.log(songs);
   }, [genre]);
 
   return (
@@ -32,17 +31,23 @@ const GenreSong = () => {
 
       <table className="mt-10 w-full">
         <SongHeader />
-        <tbody>
-          {songs.map((song) => (
-            <Song
-              album={song.album.name}
-              artist={song.album.artists[0].name}
-              cover={song.album.images[0].url}
-              time={song.duration_ms}
-              title={song.name}
-            />
-          ))}
-        </tbody>
+        {!isLoading && (
+          <tbody>
+            {songs.map((song) => (
+              <Song
+                key={song.id}
+                album={song.album.name}
+                artist={song.album.artists[0].name}
+                cover={song.album.images[0].url}
+                time={song.duration_ms}
+                title={song.name}
+                albumID={song.album.id}
+                artistID={song.album.artists[0].id}
+                titleID={song.id}
+              />
+            ))}
+          </tbody>
+        )}
       </table>
     </div>
   );

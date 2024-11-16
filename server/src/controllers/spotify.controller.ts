@@ -55,3 +55,68 @@ export const getGenres = async (
 		return response.status(500).send("Error fetching genres");
 	}
 };
+
+export const getArtist = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const { artist, id } = request.query;
+
+	try {
+		const res = await axios.get(
+			`https://api.spotify.com/v1/artists/${id}`,
+			{
+				headers: await getHeaders(),
+			}
+		);
+
+		const discography = await axios.get(
+			`https://api.spotify.com/v1/search?q=${artist}&type=artist,track,album`,
+			{ headers: await getHeaders() }
+		);
+
+		return response.json({
+			about: res.data,
+			discography: discography.data,
+		});
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching artist");
+	}
+};
+
+export const getAlbum = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const { id } = request.query;
+
+	try {
+		const res = await axios.get(`https://api.spotify.com/v1/albums/${id}`, {
+			headers: await getHeaders(),
+		});
+
+		return response.json({ ...res.data });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching album");
+	}
+};
+
+export const getTrack = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const { id } = request.query;
+
+	try {
+		const res = await axios.get(`https://api.spotify.com/v1/tracks/${id}`, {
+			headers: await getHeaders(),
+		});
+
+		return response.json({ ...res.data });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching song");
+	}
+};
