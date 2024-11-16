@@ -21,6 +21,25 @@ export const search = async (
 	}
 };
 
+export const getSongs = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const { song } = request.query;
+
+	try {
+		const res = await axios.get(
+			`https://api.spotify.com/v1/search?q=${song}&type=track`,
+			{ headers: await getHeaders() }
+		);
+
+		return response.json(res.data);
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching songs");
+	}
+};
+
 export const getGenres = async (
 	request: Request,
 	response: Response
