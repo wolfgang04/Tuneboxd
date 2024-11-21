@@ -7,6 +7,7 @@ import GenreSong from "./pages/Discovery/GenreSong";
 import Artist from "./pages/Artist";
 import Album from "./pages/Album";
 import Track from "./pages/Track";
+import Community from "./pages/Community";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="discovery" element={<Discovery />} />
         <Route path="discovery/genres" element={<Genres />} />
         <Route path="discovery/genres/:genre" element={<GenreSong />} />
+        <Route path="community" element={<Community />} />
         <Route path="artist/:id" element={<Artist />} />
         <Route path="album/:id" element={<Album />} />
         <Route path="track/:id" element={<Track />} />
