@@ -26,3 +26,7 @@ tr td:last-child {
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
 }
+
+.navbar-link {
+  @apply cursor-pointer font-medium text-black underline-offset-4 hover:underline;
+}
