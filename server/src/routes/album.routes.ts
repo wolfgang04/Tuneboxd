@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { likeAlbum } from "../controllers/album.controller";
+import { likeAlbum, unlikeAlbum } from "../controllers/album.controller";
 
 const router = Router();
 
 router.post("/like", likeAlbum);
+router.post("/unlike", unlikeAlbum);
 
 export default router;

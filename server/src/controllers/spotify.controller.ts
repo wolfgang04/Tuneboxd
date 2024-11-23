@@ -120,3 +120,64 @@ export const getTrack = async (
 		return response.status(500).send("Error fetching song");
 	}
 };
+
+export const recommendSongs = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const { seed_genres } = request.query;
+
+	try {
+		const res = await axios.get(
+			`https://api.spotify.com/v1/recommendations?seed_genres=${seed_genres}`,
+			{ headers: await getHeaders() }
+		);
+
+		return response.json({ ...res.data });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching recommendations");
+	}
+};
+
+export const getTopTracks = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const { id } = request.query;
+
+	try {
+		const res = await axios.get(
+			`https://api.spotify.com/v1/artists/${id}/top-tracks`,
+			{
+				headers: await getHeaders(),
+			}
+		);
+
+		return response.json({ ...res.data });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching top tracks");
+	}
+};
+
+export const getRelatedArtists = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const { id } = request.query;
+
+	try {
+		const res = await axios.get(
+			`https://api.spotify.com/v1/artists/${id}/related-artists`,
+			{
+				headers: await getHeaders(),
+			}
+		);
+
+		return response.json({ ...res.data });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching related artists");
+	}
+};

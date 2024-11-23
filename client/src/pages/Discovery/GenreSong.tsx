@@ -11,11 +11,17 @@ const GenreSong = () => {
   const genre = location.pathname.slice(18);
 
   const fetchSongs = async () => {
-    const res = await axios.get("http://localhost:8080/api/spotify/song", {
-      params: { song: genre },
-    });
+    const res = await axios.get(
+      "http://localhost:8080/api/spotify/recommendSongs",
+      {
+        params: { seed_genres: genre },
+      },
+    );
 
-    setSongs(res.data.tracks.items);
+    console.log(res);
+
+    // setSongs((prevSongs) => [...prevSongs, ...res.data.tracks]);
+    setSongs(res.data.tracks);
     setIsLoading(false);
   };
 
