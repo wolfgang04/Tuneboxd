@@ -1,6 +1,9 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import { getHeaders } from "../utils/spotifyToken";
+import { supabase } from "../utils/supabaseClient";
+import { getRandomGenres } from "../utils/randomGenres";
+import { getUser } from "../constants";
 
 export const search = async (
 	request: Request,
@@ -121,7 +124,7 @@ export const getTrack = async (
 	}
 };
 
-export const recommendSongs = async (
+export const recommendSongsByGenre = async (
 	request: Request,
 	response: Response
 ): Promise<any> => {
@@ -132,6 +135,58 @@ export const recommendSongs = async (
 			`https://api.spotify.com/v1/recommendations?seed_genres=${seed_genres}`,
 			{ headers: await getHeaders() }
 		);
+
+		return response.json({ ...res.data });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching recommendations");
+	}
+};
+
+export const recommendSongs = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	try {
+		const user = await getUser(request);
+		if (!user) return response.status(401).send("Unauthorized");
+
+		let res;
+
+		const { data: songData, error: songError } = await supabase.rpc(
+			"get_random_songs",
+			{ user_name: user, count: 5 }
+		);
+		if (songError) throw songError;
+
+		const { data: artistData, error: artistError } = await supabase.rpc(
+			"get_random_artists",
+			{ user_name: user, count: 5 }
+		);
+		if (artistError) throw artistError;
+
+		const songIds = songData.map((song: string) => song).join(",");
+		const artistIds = artistData.map((artist: string) => artist).join(",");
+
+		if (songData.length > 0 || artistData.length > 0) {
+			res = await axios.get(
+				`https://api.spotify.com/v1/recommendations?${
+					songData.length > 0 ? `seed_tracks=${songIds}` : ""
+				}${artistData.length > 0 ? `&seed_artists=${artistIds}` : ""}`,
+				{ headers: await getHeaders() }
+			);
+		} else {
+			const { data: genresData } = await axios.get(
+				"https://api.spotify.com/v1/recommendations/available-genre-seeds",
+				{ headers: await getHeaders() }
+			);
+			const genres = getRandomGenres(genresData.genres, 5).join(",");
+
+			res = await axios.get(
+				`https://api.spotify.com/v1/recommendations?seed_genres=${genres}`,
+				{ headers: await getHeaders() }
+			);
+		}
 
 		return response.json({ ...res.data });
 	} catch (error) {

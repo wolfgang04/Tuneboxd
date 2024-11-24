@@ -37,7 +37,7 @@ export const signup = async (
 
 		const { data: signupData, error: signupError } = await supabase
 			.from("user")
-			.insert([{ loweredUsername, email, password: hash }]);
+			.insert([{ username: loweredUsername, email, password: hash }]);
 		if (signupError) throw signupError;
 
 		request.session.user = username;
@@ -81,8 +81,6 @@ export const login = async (
 
 		if (!userData || userData?.length === 0)
 			return response.status(401).json({ msg: "Invalid credentials" });
-
-		console.log(userData[0]);
 
 		const isMatch = await bcrypt.compare(password, userData[0].password);
 		if (isMatch) {
