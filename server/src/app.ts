@@ -8,6 +8,8 @@ import spotifyRoutes from "./routes/spotify.routes";
 import albumRoutes from "./routes/album.routes";
 import artistRoutes from "./routes/artist.routes";
 import songRoutes from "./routes/song.routes";
+import reviewRoutes from "./routes/review.routes";
+import playlistRoutes from "./routes/playlist.routes";
 
 const app: express.Application = express();
 
@@ -54,5 +56,7 @@ app.use("/api/spotify", spotifyRoutes);
 app.use("/api/song", songRoutes);
 app.use("/api/artist", artistRoutes);
 app.use("/api/album", albumRoutes);
+app.use("/api/review", reviewRoutes);
+app.use("api/playlist", playlistRoutes);
 
 export default app;
