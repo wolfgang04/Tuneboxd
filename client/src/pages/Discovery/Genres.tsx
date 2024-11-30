@@ -11,7 +11,6 @@ const Genres = () => {
   const fetchGenres = async () => {
     setIsLoading(true);
     const { data } = await axios.get("http://localhost:8080/api/spotify/genre");
-    console.log(data.genres);
     setGenres(data.genres);
     setIsLoading(false);
   };

@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { SpotifyTokenResponse } from "../models/spotify.model";
+import { clientID, clientSecret } from "../constants";
+
+let cachedToken: SpotifyTokenResponse | null = null;
 
 const getSpotifyToken = async (): Promise<SpotifyTokenResponse> => {
-	const clientId = process.env.SPOTIFY_CLIENT_ID;
-	const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-
 	try {
 		const response: AxiosResponse<SpotifyTokenResponse> = await axios.post(
 			"https://accounts.spotify.com/api/token",
@@ -15,7 +15,7 @@ const getSpotifyToken = async (): Promise<SpotifyTokenResponse> => {
 				headers: {
 					"Content-Type": "application/x-www-form-urlencoded",
 					Authorization: `Basic ${Buffer.from(
-						`${clientId}:${clientSecret}`
+						`${clientID}:${clientSecret}`
 					).toString("base64")}`,
 				},
 			}
@@ -29,9 +29,18 @@ const getSpotifyToken = async (): Promise<SpotifyTokenResponse> => {
 };
 
 const getToken = async () => {
-	const token = await getSpotifyToken();
+	if (
+		cachedToken &&
+		cachedToken.expires_in &&
+		cachedToken.expires_in > Date.now()
+	)
+		return cachedToken;
 
-	return token.access_token;
+	const token = await getSpotifyToken();
+	cachedToken = token;
+	cachedToken.expires_in = Date.now() + token.expires_in * 1000;
+
+	return cachedToken.access_token;
 };
 
 export const getHeaders = async (): Promise<{ [key: string]: string }> => {

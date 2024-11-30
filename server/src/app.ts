@@ -5,6 +5,12 @@ import Redis from "ioredis";
 import RedisStore from "connect-redis";
 import userRoutes from "./routes/user.routes";
 import spotifyRoutes from "./routes/spotify.routes";
+import albumRoutes from "./routes/album.routes";
+import artistRoutes from "./routes/artist.routes";
+import songRoutes from "./routes/song.routes";
+import reviewRoutes from "./routes/review.routes";
+import playlistRoutes from "./routes/playlist.routes";
+import followRoutes from "./routes/follow.routes";
 
 const app: express.Application = express();
 
@@ -48,5 +54,11 @@ app.use(
 
 app.use("/api/user", userRoutes);
 app.use("/api/spotify", spotifyRoutes);
+app.use("/api/song", songRoutes);
+app.use("/api/artist", artistRoutes);
+app.use("/api/album", albumRoutes);
+app.use("/api/review", reviewRoutes);
+app.use("/api/playlist", playlistRoutes);
+app.use("/api/follow", followRoutes);
 
 export default app;
