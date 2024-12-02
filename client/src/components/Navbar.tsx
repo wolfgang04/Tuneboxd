@@ -8,7 +8,6 @@ const Navbar = () => {
 
       </div>
 
-      {/* Navigation Links */}
       <div className="hidden md:flex space-x-8">
         <a href="#" className="text-black font-medium hover:underline underline-offset-4">Home</a>
         <a href="#" className="text-gray-700 font-medium hover:underline underline-offset-4">Discover</a>
@@ -16,7 +15,6 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center space-x-4">
-        {/* Search Bar */}
         <div className="relative">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute left-3 top-2.5 text-gray-400 w-5 h-5">
             <circle cx="11" cy="11" r="8"></circle>
