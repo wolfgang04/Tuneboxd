@@ -8,21 +8,25 @@ const GenreSong = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [songs, setSongs] = useState<any[]>([]);
   const location = useLocation();
-  const genre = location.pathname.slice(18);
+  const path = location.pathname.slice(18);
+  const genre = path.replace(/%20/g, " ");
 
   const fetchSongs = async () => {
-    const res = await axios.get(
-      "http://localhost:8080/api/spotify/recommendSongs",
-      {
-        params: { seed_genres: genre },
-      },
-    );
+    try {
+      const res = await axios.get(
+        "http://localhost:8080/api/spotify/recommendSongs",
+        {
+          params: { seed_genres: genre },
+        },
+      );
 
-    console.log(res);
-
-    // setSongs((prevSongs) => [...prevSongs, ...res.data.tracks]);
-    setSongs(res.data.tracks);
-    setIsLoading(false);
+      console.log(res.data.tracks);
+      setSongs(res.data.tracks.items);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
