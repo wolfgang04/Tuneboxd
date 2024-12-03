@@ -8,10 +8,17 @@ import Artist from "./pages/Artist";
 import Album from "./pages/Album";
 import Track from "./pages/Track";
 import Community from "./pages/Community";
+import Settings from "./pages/Settings";
+import Login from "./pages/login";
+import SignUp from "./pages/signup";
+import ResetPass from "./pages/resetpass";
 
 function App() {
   return (
     <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/resetpass" element={<ResetPass />} />
       <Route path="/" element={<Navbar />}>
         <Route index element={<Dashboard />} />
         <Route path="discovery" element={<Discovery />} />
@@ -21,6 +28,7 @@ function App() {
         <Route path="artist/:id" element={<Artist />} />
         <Route path="album/:id" element={<Album />} />
         <Route path="track/:id" element={<Track />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   );

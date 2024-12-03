@@ -1,0 +1,127 @@
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../public/ls_background.gif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); 
+  z-index: 1;
+}
+
+.formSection {
+  position: relative;
+  z-index: 2;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+}
+
+.logo {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.welcome {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.form input[type="text"],
+.form input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.signInButton {
+  background-color: black;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.divider {
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+  margin: 0 10px;
+}
+
+.signupText {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 1.5rem;
+}
+
+.signupText a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2rem;
+}
+
+.options {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.signupText, .footer {
+  text-align: center;
+  margin-top: 1rem; 
+}

@@ -66,12 +66,14 @@ const Navbar = () => {
             className="my-auto aspect-[0.86] w-6 shrink-0 self-stretch object-contain"
             alt=""
           />
+          <NavLink to="/Settings">
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/3861a12c399e50de32d67eb366c059b6c08c18b92c6f8039e484ab09bf099a8e?placeholderIfAbsent=true&apiKey=73641803e2624e9f9f9030f4043fd88e"
             className="my-auto aspect-[0.86] w-6 shrink-0 self-stretch object-contain"
             alt=""
           />
+          </NavLink>
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/3ae4e442f1272c2f1e46cda312efda47d8416615a772ddb2d88eba6beed4efd9?placeholderIfAbsent=true&apiKey=73641803e2624e9f9f9030f4043fd88e"
