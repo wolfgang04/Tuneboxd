@@ -9,7 +9,7 @@ const MainContent: React.FC = () => {
     <section className="self-center mt-9 w-full max-w-[1521px] max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col">
         <Boxbox />
-        <TopArtists />
+       <TopArtists/>
       </div>
       <div className="flex flex-wrap gap-5 justify-between mt-24 ml-10 max-w-full text-4xl font-bold text-black w-[1104px] max-md:mt-10">
         <h2 data-layername="recentListens">Recent Listens</h2>
