@@ -9,13 +9,14 @@ import Album from "./pages/Album";
 import Track from "./pages/Track";
 import Community from "./pages/Community";
 import Settings from "./pages/Settings";
-import Login from "./pages/login";
-import SignUp from "./pages/signup";
-import ResetPass from "./pages/resetpass";
+import Login from "./pages/Auth/login";
+import SignUp from "./pages/Auth/signup";
+import ResetPass from "./pages/Auth/resetpass";
 import Account from "./components/Settings/Account";
 import Notifications from "./components/Settings/Notifications";
 import Privacy from "./components/Settings/Privacy";
 import Preferences from "./components/Settings/Preferences";
+import Auth from "./components/Auth/Auth";
 
 function App() {
   return (
@@ -23,20 +24,22 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/resetpass" element={<ResetPass />} />
-      <Route path="/" element={<Navbar />}>
-        <Route index element={<Dashboard />} />
-        <Route path="discovery" element={<Discovery />} />
-        <Route path="discovery/genres" element={<Genres />} />
-        <Route path="discovery/genres/:genre" element={<GenreSong />} />
-        <Route path="community" element={<Community />} />
-        <Route path="artist/:id" element={<Artist />} />
-        <Route path="album/:id" element={<Album />} />
-        <Route path="track/:id" element={<Track />} />
-        <Route path="settings" element={<Settings />}>
-          <Route path="account" element={<Account />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="privacy" element={<Privacy />} />
-          <Route path="preferences" element={<Preferences />} />
+      <Route path="/" element={<Auth />}>
+        <Route element={<Navbar />}>
+          <Route index element={<Dashboard />} />
+          <Route path="discovery" element={<Discovery />} />
+          <Route path="discovery/genres" element={<Genres />} />
+          <Route path="discovery/genres/:genre" element={<GenreSong />} />
+          <Route path="community" element={<Community />} />
+          <Route path="artist/:id" element={<Artist />} />
+          <Route path="album/:id" element={<Album />} />
+          <Route path="track/:id" element={<Track />} />
+          <Route path="settings" element={<Settings />}>
+            <Route path="account" element={<Account />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="privacy" element={<Privacy />} />
+            <Route path="preferences" element={<Preferences />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

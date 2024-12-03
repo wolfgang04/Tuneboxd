@@ -12,7 +12,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../public/ls_background.gif");
+  background-image: url("../ls_background.gif");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -26,7 +26,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); 
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .signInButton {
-  background-color: black;
+  background-color: rgb(36, 36, 36);
   color: white;
   padding: 0.75rem;
   border: none;
@@ -79,6 +79,10 @@
   cursor: pointer;
   margin-top: 1rem;
   width: 100%;
+}
+
+.signInButton:hover {
+  background-color: black;
 }
 
 .divider {
@@ -92,7 +96,7 @@
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
   border-bottom: 1px solid #ddd;
   margin: 0 10px;
@@ -121,7 +125,8 @@
   margin-bottom: 1rem;
 }
 
-.signupText, .footer {
+.signupText,
+.footer {
   text-align: center;
-  margin-top: 1rem; 
+  margin-top: 1rem;
 }

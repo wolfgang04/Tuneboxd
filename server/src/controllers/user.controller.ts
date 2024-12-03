@@ -117,6 +117,7 @@ export const status = async (
 	request: Request,
 	response: Response
 ): Promise<any> => {
+	console.log(request.session);
 	return !request.session.user
 		? response.status(401).json({ msg: "Unauthorized" })
 		: response.status(200).json({ msg: "Authorized" });
@@ -125,8 +126,10 @@ export const status = async (
 export const fetchUserDetails = async (
 	request: Request,
 	response: Response
-) => {
+): Promise<any> => {
 	const user = await getUser(request);
+	console.log(request.session);
+
 	if (!user) return response.status(401).send("Unauthorized");
 
 	try {
