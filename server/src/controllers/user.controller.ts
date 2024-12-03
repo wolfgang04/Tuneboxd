@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { supabase } from "../utils/supabaseClient";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { getUser, saltRounds } from "../constants";
 
 dotenv.config();
 
@@ -119,4 +120,71 @@ export const status = async (
 	return !request.session.user
 		? response.status(401).json({ msg: "Unauthorized" })
 		: response.status(200).json({ msg: "Authorized" });
+};
+
+export const fetchUserDetails = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const user = await getUser(request);
+
+	if (!user) return response.status(401).send("Unauthorized");
+
+	try {
+		const { data: userData, error: userError } = await supabase
+			.from("user")
+			.select("username, email, created_at, image")
+			.eq("username", user);
+		if (userError) throw userError;
+
+		return response.json({ ...userData });
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching user details");
+	}
+};
+
+export const changeCreds = async (
+	request: Request,
+	response: Response
+): Promise<any> => {
+	const user = await getUser(request);
+	if (!user) return response.status(401).send("Unauthorized");
+
+	const { username, email, password, prevPassword } = request.body;
+
+	try {
+		const { data: userData, error: userError } = await supabase
+			.from("user")
+			.select("username, email, password")
+			.match({ username: user });
+		if (userError) throw userError;
+
+		const isMatch = await bcrypt.compare(
+			prevPassword,
+			userData[0].password
+		);
+		if (!isMatch) return response.status(401).send("Invalid credentials");
+
+		const updates: { [key: string]: string } = {};
+		if (username != userData[0].username) updates.username = username;
+		if (email != userData[0].email) updates.email = email;
+		if (password)
+			updates.password = await bcrypt.hash(password, saltRounds);
+
+		console.log("updates to be made:", updates);
+
+		const { data: updateData, error: updateError } = await supabase
+			.from("user")
+			.update(updates)
+			.match({ username: user });
+		if (updateError) throw updateError;
+
+		request.session.user = username;
+
+		return response.status(200).send("Successfully changed credentials");
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error changing credentials");
+	}
 };

@@ -1,6 +1,35 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import ProfileBtn from "./ProfileBtn";
 
 const Navbar = () => {
+  const [userImage, setUserImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const getUserImage = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user/details", {
+        withCredentials: true,
+      });
+
+      setUserImage(res.data[0].image);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getUserImage();
+  }, []);
+
   return (
     <>
       <nav className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2">
@@ -67,19 +96,27 @@ const Navbar = () => {
             alt=""
           />
           <NavLink to="/Settings">
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3861a12c399e50de32d67eb366c059b6c08c18b92c6f8039e484ab09bf099a8e?placeholderIfAbsent=true&apiKey=73641803e2624e9f9f9030f4043fd88e"
-            className="my-auto aspect-[0.86] w-6 shrink-0 self-stretch object-contain"
-            alt=""
-          />
+            <img
+              loading="lazy"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/3861a12c399e50de32d67eb366c059b6c08c18b92c6f8039e484ab09bf099a8e?placeholderIfAbsent=true&apiKey=73641803e2624e9f9f9030f4043fd88e"
+              className="my-auto aspect-[0.86] w-6 shrink-0 self-stretch object-contain"
+              alt=""
+            />
           </NavLink>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3ae4e442f1272c2f1e46cda312efda47d8416615a772ddb2d88eba6beed4efd9?placeholderIfAbsent=true&apiKey=73641803e2624e9f9f9030f4043fd88e"
-            className="aspect-square w-[50px] shrink-0 self-stretch object-contain"
-            alt=""
-          />
+          {!isLoading && (
+            <>
+              <button onClick={() => toggleDropdown()}>
+                <img
+                  loading="lazy"
+                  src={userImage || ""}
+                  className="z-0 aspect-square w-[50px] shrink-0 self-stretch rounded-full object-contain"
+                  alt=""
+                />
+              </button>
+
+              {isOpen && <ProfileBtn isOpen={isOpen} />}
+            </>
+          )}
         </div>
       </nav>
       <Outlet />

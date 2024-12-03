@@ -4,6 +4,7 @@ import { getHeaders } from "../utils/spotifyToken";
 import { supabase } from "../utils/supabaseClient";
 import { getRandomGenres } from "../utils/randomGenres";
 import { getUser } from "../constants";
+import { genres } from "../models/genre.model";
 
 export const search = async (
 	request: Request,
@@ -48,11 +49,7 @@ export const getGenres = async (
 	response: Response
 ): Promise<any> => {
 	try {
-		const res = await axios.get(
-			"https://api.spotify.com/v1/recommendations/available-genre-seeds",
-			{ headers: await getHeaders() }
-		);
-		return response.json({ ...res.data });
+		return response.json({ genres });
 	} catch (error) {
 		console.error(error);
 		return response.status(500).send("Error fetching genres");
@@ -129,10 +126,13 @@ export const recommendSongsByGenre = async (
 	response: Response
 ): Promise<any> => {
 	const { seed_genres } = request.query;
+	const genre = seed_genres as string;
 
 	try {
 		const res = await axios.get(
-			`https://api.spotify.com/v1/recommendations?seed_genres=${seed_genres}`,
+			`https://api.spotify.com/v1/search?q=${genre}&type=track&offset=${Math.floor(
+				Math.random() * 100
+			)}`,
 			{ headers: await getHeaders() }
 		);
 
@@ -165,14 +165,21 @@ export const recommendSongs = async (
 		);
 		if (artistError) throw artistError;
 
-		const songIds = songData.map((song: string) => song).join(",");
-		const artistIds = artistData.map((artist: string) => artist).join(",");
+		const songQueries = songData
+			.map((song: string) => `track:${song}`)
+			.join(" OR ");
+		const artistQueries = artistData
+			.map((artist: string) => `artist:${artist}`)
+			.join(" OR ");
 
 		if (songData.length > 0 || artistData.length > 0) {
+			const query = `${songQueries}${
+				artistQueries ? ` OR ${artistQueries}` : ""
+			}`;
 			res = await axios.get(
-				`https://api.spotify.com/v1/recommendations?${
-					songData.length > 0 ? `seed_tracks=${songIds}` : ""
-				}${artistData.length > 0 ? `&seed_artists=${artistIds}` : ""}`,
+				`https://api.spotify.com/v1/search?q=${encodeURIComponent(
+					query
+				)}&type=track`,
 				{ headers: await getHeaders() }
 			);
 		} else {
@@ -180,13 +187,38 @@ export const recommendSongs = async (
 				"https://api.spotify.com/v1/recommendations/available-genre-seeds",
 				{ headers: await getHeaders() }
 			);
-			const genres = getRandomGenres(genresData.genres, 5).join(",");
+			const genres = getRandomGenres(genresData.genres, 5).join(" OR ");
 
 			res = await axios.get(
-				`https://api.spotify.com/v1/recommendations?seed_genres=${genres}`,
+				`https://api.spotify.com/v1/search?q=genre:${encodeURIComponent(
+					genres
+				)}&type=track`,
 				{ headers: await getHeaders() }
 			);
 		}
+
+		// const songIds = songData.map((song: string) => song).join(",");
+		// const artistIds = artistData.map((artist: string) => artist).join(",");
+
+		// if (songData.length > 0 || artistData.length > 0) {
+		// 	res = await axios.get(
+		// 		`https://api.spotify.com/v1/recommendations?${
+		// 			songData.length > 0 ? `seed_tracks=${songIds}` : ""
+		// 		}${artistData.length > 0 ? `&seed_artists=${artistIds}` : ""}`,
+		// 		{ headers: await getHeaders() }
+		// 	);
+		// } else {
+		// 	const { data: genresData } = await axios.get(
+		// 		"https://api.spotify.com/v1/recommendations/available-genre-seeds",
+		// 		{ headers: await getHeaders() }
+		// 	);
+		// 	const genres = getRandomGenres(genresData.genres, 5).join(",");
+
+		// 	res = await axios.get(
+		// 		`https://api.spotify.com/v1/recommendations?seed_genres=${genres}`,
+		// 		{ headers: await getHeaders() }
+		// 	);
+		// }
 
 		return response.json({ ...res.data });
 	} catch (error) {
@@ -224,10 +256,8 @@ export const getRelatedArtists = async (
 
 	try {
 		const res = await axios.get(
-			`https://api.spotify.com/v1/artists/${id}/related-artists`,
-			{
-				headers: await getHeaders(),
-			}
+			`https://api.spotify.com/v1/search?q=${id}&type=artist`,
+			{ headers: await getHeaders() }
 		);
 
 		return response.json({ ...res.data });
