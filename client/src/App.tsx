@@ -12,6 +12,10 @@ import Settings from "./pages/Settings";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import ResetPass from "./pages/resetpass";
+import Account from "./components/Settings/Account";
+import Notifications from "./components/Settings/Notifications";
+import Privacy from "./components/Settings/Privacy";
+import Preferences from "./components/Settings/Preferences";
 
 function App() {
   return (
@@ -28,7 +32,12 @@ function App() {
         <Route path="artist/:id" element={<Artist />} />
         <Route path="album/:id" element={<Album />} />
         <Route path="track/:id" element={<Track />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="settings" element={<Settings />}>
+          <Route path="account" element={<Account />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="privacy" element={<Privacy />} />
+          <Route path="preferences" element={<Preferences />} />
+        </Route>
       </Route>
     </Routes>
   );
