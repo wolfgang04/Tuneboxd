@@ -4,22 +4,33 @@ import { useLocation } from "react-router-dom";
 
 const Artist = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [relatedArtists, setRelatedArtists] = useState<any>([]);
   const [artist, setArtist] = useState<any>({});
   const location = useLocation();
   const artistID = location.pathname.slice(8);
   const artistName = location.state.artist;
 
   const fetchArtist = useCallback(async () => {
-    const { data } = await axios.get(
-      "http://localhost:8080/api/spotify/artist",
-      {
-        params: { artist: artistName, id: artistID },
-      },
-    );
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/spotify/artist",
+        {
+          params: { artist: artistName, id: artistID },
+        },
+      );
+      const { data: relatedArtists } = await axios.get(
+        "http://localhost:8080/api/spotify/relatedArtists",
+        { params: { id: artistID } },
+      );
 
-    setArtist(data);
-    setIsLoading(false);
-    console.log(data);
+      setRelatedArtists(relatedArtists);
+      setArtist(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [artistID, artistName]);
 
   useEffect(() => {

@@ -34,7 +34,7 @@ const GenreSong = () => {
   }, [genre]);
 
   return (
-    <div className="mx-auto my-10 w-[90%]">
+    <div className="items mx-auto my-10 w-[90%]">
       <div className="flex h-[350px] items-center justify-center rounded-2xl bg-[#A7A7A7]">
         {genre}
       </div>
@@ -59,6 +59,10 @@ const GenreSong = () => {
           </tbody>
         )}
       </table>
+
+      <button className="relative left-1/2 -translate-x-1/2 rounded-md bg-[#A7A7A7] px-5 py-3 text-white hover:bg-[#7e7e7e]">
+        Next
+      </button>
     </div>
   );
 };

@@ -151,19 +151,51 @@ export const recommendSongs = async (
 		const user = await getUser(request);
 		if (!user) return response.status(401).send("Unauthorized");
 
-		// let res;
+		let res;
 
-		// const { data: songData, error: songError } = await supabase.rpc(
-		// 	"get_random_songs",
-		// 	{ user_name: user, count: 5 }
-		// );
-		// if (songError) throw songError;
+		const { data: songData, error: songError } = await supabase.rpc(
+			"get_random_songs",
+			{ user_name: user, count: 5 }
+		);
+		if (songError) throw songError;
 
-		// const { data: artistData, error: artistError } = await supabase.rpc(
-		// 	"get_random_artists",
-		// 	{ user_name: user, count: 5 }
-		// );
-		// if (artistError) throw artistError;
+		const { data: artistData, error: artistError } = await supabase.rpc(
+			"get_random_artists",
+			{ user_name: user, count: 5 }
+		);
+		if (artistError) throw artistError;
+
+		const songQueries = songData
+			.map((song: string) => `track:${song}`)
+			.join(" OR ");
+		const artistQueries = artistData
+			.map((artist: string) => `artist:${artist}`)
+			.join(" OR ");
+
+		if (songData.length > 0 || artistData.length > 0) {
+			const query = `${songQueries}${
+				artistQueries ? ` OR ${artistQueries}` : ""
+			}`;
+			res = await axios.get(
+				`https://api.spotify.com/v1/search?q=${encodeURIComponent(
+					query
+				)}&type=track`,
+				{ headers: await getHeaders() }
+			);
+		} else {
+			const { data: genresData } = await axios.get(
+				"https://api.spotify.com/v1/recommendations/available-genre-seeds",
+				{ headers: await getHeaders() }
+			);
+			const genres = getRandomGenres(genresData.genres, 5).join(" OR ");
+
+			res = await axios.get(
+				`https://api.spotify.com/v1/search?q=genre:${encodeURIComponent(
+					genres
+				)}&type=track`,
+				{ headers: await getHeaders() }
+			);
+		}
 
 		// const songIds = songData.map((song: string) => song).join(",");
 		// const artistIds = artistData.map((artist: string) => artist).join(",");
@@ -188,7 +220,7 @@ export const recommendSongs = async (
 		// 	);
 		// }
 
-		// return response.json({ ...res.data });
+		return response.json({ ...res.data });
 	} catch (error) {
 		console.error(error);
 		return response.status(500).send("Error fetching recommendations");
@@ -224,10 +256,8 @@ export const getRelatedArtists = async (
 
 	try {
 		const res = await axios.get(
-			`https://api.spotify.com/v1/artists/${id}/related-artists`,
-			{
-				headers: await getHeaders(),
-			}
+			`https://api.spotify.com/v1/search?q=${id}&type=artist`,
+			{ headers: await getHeaders() }
 		);
 
 		return response.json({ ...res.data });
