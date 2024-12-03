@@ -15,7 +15,11 @@ import ResetPass from '../pages/resetpass';
 
 function App() {
   return (
+	
     <Routes>
+		<Route path="/login" element={<Login />} />
+		<Route path="/signup" element={<SignUp />} />
+		<Route path="/resetpass" element={<ResetPass />} />
       <Route path="/" element={<Navbar />}>
         <Route index element={<Dashboard />} />
         <Route path="discovery" element={<Discovery />} />
@@ -27,9 +31,6 @@ function App() {
         <Route path="track/:id" element={<Track />} />
         <Route path="settings" element={<Settings />} />
       </Route>
-	    <Route path="/login" element={<Login />} />
-		<Route path="/signup" element={<SignUp />} />
-		<Route path="/resetpass" element={<ResetPass />} />
     </Routes>
   );
 }
