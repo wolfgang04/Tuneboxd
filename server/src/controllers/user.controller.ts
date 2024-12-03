@@ -117,7 +117,6 @@ export const status = async (
 	request: Request,
 	response: Response
 ): Promise<any> => {
-	console.log(request.session);
 	return !request.session.user
 		? response.status(401).json({ msg: "Unauthorized" })
 		: response.status(200).json({ msg: "Authorized" });
@@ -128,7 +127,6 @@ export const fetchUserDetails = async (
 	response: Response
 ): Promise<any> => {
 	const user = await getUser(request);
-	console.log(request.session);
 
 	if (!user) return response.status(401).send("Unauthorized");
 
@@ -174,11 +172,15 @@ export const changeCreds = async (
 		if (password)
 			updates.password = await bcrypt.hash(password, saltRounds);
 
-		const { error: updateError } = await supabase
+		console.log("updates to be made:", updates);
+
+		const { data: updateData, error: updateError } = await supabase
 			.from("user")
 			.update(updates)
 			.match({ username: user });
 		if (updateError) throw updateError;
+
+		request.session.user = username;
 
 		return response.status(200).send("Successfully changed credentials");
 	} catch (error) {

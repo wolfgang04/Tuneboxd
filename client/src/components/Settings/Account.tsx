@@ -1,15 +1,59 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const Account = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const [username, setUsername] = useState<string>("JohnDoe");
-  const [email, setEmail] = useState<string>("johndoe@example.com");
-  const [password, setPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [currentPassword, setCurrentPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const handleSave = () => {
+  const fetchUserData = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user/details", {
+        withCredentials: true,
+      });
+
+      const { username, email } = res.data[0];
+      setUsername(username);
+      setEmail(email);
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const handleSave = async () => {
     setIsEditing(false);
-    console.log("Saved changes:", { username, email, password });
+
+    if (newPassword !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/user/changeCreds",
+        {
+          username,
+          email,
+          password: newPassword,
+          prevPassword: currentPassword,
+        },
+        { withCredentials: true },
+      );
+
+      console.log(res.data);
+    } catch (error) {
+      console.error("Failed to save changes:", error);
+    }
+
+    // console.log("Saved changes:", { username, email, password });
   };
 
   return (
@@ -57,13 +101,50 @@ const Account = () => {
         {/* Password */}
         <div>
           <label htmlFor="password" className="block text-gray-600">
-            Password
+            Current Password
           </label>
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={currentPassword}
+            required
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            disabled={!isEditing}
+            placeholder={isEditing ? "Enter new password" : "********"}
+            className={`w-full rounded-lg border p-2 ${
+              isEditing
+                ? "border-gray-300 bg-white"
+                : "cursor-not-allowed border-gray-200 bg-gray-100"
+            }`}
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-gray-600">
+            New Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            disabled={!isEditing}
+            placeholder={isEditing ? "Enter new password" : "********"}
+            className={`w-full rounded-lg border p-2 ${
+              isEditing
+                ? "border-gray-300 bg-white"
+                : "cursor-not-allowed border-gray-200 bg-gray-100"
+            }`}
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-gray-600">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             disabled={!isEditing}
             placeholder={isEditing ? "Enter new password" : "********"}
             className={`w-full rounded-lg border p-2 ${

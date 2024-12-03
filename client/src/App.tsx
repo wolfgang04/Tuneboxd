@@ -34,7 +34,7 @@ function App() {
           <Route path="artist/:id" element={<Artist />} />
           <Route path="album/:id" element={<Album />} />
           <Route path="track/:id" element={<Track />} />
-          <Route path="settings" element={<Settings />}>
+          <Route path="settings/*" element={<Settings />}>
             <Route path="account" element={<Account />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="privacy" element={<Privacy />} />
