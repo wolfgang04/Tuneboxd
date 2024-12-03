@@ -9,6 +9,8 @@ import Album from "./pages/Album";
 import Track from "./pages/Track";
 import Community from "./pages/Community";
 import Settings from "./pages/Settings";
+import ReviewForm from "./pages/Reviewform";
+import AlbumReview from "./pages/Songpage";
 import Login from "./pages/Auth/login";
 import SignUp from "./pages/Auth/signup";
 import ResetPass from "./pages/Auth/resetpass";
@@ -41,7 +43,9 @@ function App() {
             <Route path="preferences" element={<Preferences />} />
           </Route>
         </Route>
+        <Route path="songpage" element={<AlbumReview />} />
       </Route>
+      <Route path="pages/Reviewform" element={<ReviewForm />} />
     </Routes>
   );
 }
