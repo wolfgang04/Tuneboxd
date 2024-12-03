@@ -9,6 +9,7 @@ import Album from "./pages/Album";
 import Track from "./pages/Track";
 import Community from "./pages/Community";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 import ReviewForm from "./pages/Reviewform";
 import AlbumReview from "./pages/Songpage";
 import Login from "./pages/Auth/login";
@@ -42,6 +43,7 @@ function App() {
             <Route path="privacy" element={<Privacy />} />
             <Route path="preferences" element={<Preferences />} />
           </Route>
+          <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="songpage" element={<AlbumReview />} />
       </Route>
