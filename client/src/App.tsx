@@ -8,8 +8,10 @@ import Artist from "./pages/Artist";
 import Album from "./pages/Album";
 import Track from "./pages/Track";
 import Community from "./pages/Community";
-import Setting from "./pages/Settings"
 import Settings from "./pages/Settings";
+import ReviewForm from "./pages/Reviewform";
+import AlbumReview from "./pages/Songpage";
+
 
 function App() {
   return (
@@ -24,7 +26,9 @@ function App() {
         <Route path="album/:id" element={<Album />} />
         <Route path="track/:id" element={<Track />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="songpage" element={<AlbumReview />} />
       </Route>
+      <Route path="pages/Reviewform" element={<ReviewForm />} />
     </Routes>
   );
 }
