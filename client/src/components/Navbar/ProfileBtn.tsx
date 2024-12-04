@@ -11,7 +11,7 @@ const ProfileBtn: React.FC<Props> = ({ isOpen }) => {
 
   const handleProfileClick = () => {
     // Handle profile click
-    console.log("Profile clicked");
+    navigate("/profile");
   };
 
   const handleLogoutClick = async () => {
