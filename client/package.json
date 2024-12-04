@@ -4,9 +4,14 @@
   "description": "",
   "main": "./src/server.ts",
   "scripts": {
-    "start": "nodemon ./src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "vite",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write",
+    "preview": "vite preview"
   },
+  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
