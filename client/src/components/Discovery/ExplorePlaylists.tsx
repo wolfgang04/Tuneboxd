@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ExplorePlaylists: React.FC = () => {
+  const navigate = useNavigate();
+  
   const playlists = Array.from({ length: 10 }, (_, index) => ({
     title: "Playlist Title",
     username: "Username",
@@ -20,7 +23,7 @@ const ExplorePlaylists: React.FC = () => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-xl font-semibold mb-4">Explore Playlists</h2>
+      <h2 className="text-xl font-semibold mb-4 cursor-pointer hover:underline" onClick={() => navigate("explore-playlists")}>Explore Playlists</h2>
       <div className="relative flex items-center">
         {/* Previous Arrow */}
         <button

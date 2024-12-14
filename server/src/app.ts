@@ -11,6 +11,7 @@ import songRoutes from "./routes/song.routes";
 import reviewRoutes from "./routes/review.routes";
 import playlistRoutes from "./routes/playlist.routes";
 import followRoutes from "./routes/follow.routes";
+import lastfmRoutes from "./routes/lastfm.routes";
 
 const app: express.Application = express();
 
@@ -54,6 +55,7 @@ app.use(
 
 app.use("/api/user", userRoutes);
 app.use("/api/spotify", spotifyRoutes);
+app.use("/api/lastfm", lastfmRoutes);
 app.use("/api/song", songRoutes);
 app.use("/api/artist", artistRoutes);
 app.use("/api/album", albumRoutes);

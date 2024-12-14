@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import ProfileBtn from "./ProfileBtn";
 
 const Navbar = () => {
   const [userImage, setUserImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -34,7 +35,7 @@ const Navbar = () => {
     <>
       <nav className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2">
         <div className="flex items-center space-x-4">
-          <span className="font-jersey text-2xl font-bold">Tuneboxd</span>
+          <span className="font-jersey text-2xl font-bold cursor-pointer" onClick={() => navigate("/")}>Tuneboxd</span>
         </div>
 
         {/* Navigation Links */}

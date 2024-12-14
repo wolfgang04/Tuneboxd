@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Request, Response } from "express";
+import { request, Request, Response } from "express";
 import { getHeaders } from "../utils/spotifyToken";
 import { supabase } from "../utils/supabaseClient";
 import { getRandomGenres } from "../utils/randomGenres";
@@ -14,7 +14,7 @@ export const search = async (
 
 	try {
 		const res = await axios.get(
-			`https://api.spotify.com/v1/search?q=${searchQuery}&type=artist%2Ctrack%2Calbum`,
+			`https://api.spotify.com/v1/search?q=${searchQuery}&type=track`,
 			{ headers: await getHeaders() }
 		);
 
@@ -43,6 +43,54 @@ export const getSongs = async (
 		return response.status(500).send("Error fetching songs");
 	}
 };
+
+export const recommendBasedOnSong = async (request: Request, response: Response): Promise<any> => {
+	const songs = request.query.song as string[];
+	if (!Array.isArray(songs))
+		return response.status(400).send({ message: 'Invalid songs parameter' });
+
+	const songss = songs.join(",");
+
+	try {
+		const res = await axios.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(songss)}&type=track`, { headers: await getHeaders() });
+		return response.json(res.data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error in recommendBasedOnSong: ", error.message);
+			return response.status(500).send({ message: error.message });
+		} else {
+			console.error("Error in recommendBasedOnSong: ", error);
+			return response.status(500).send({ message: "Internal server error" });
+		}
+	}
+}
+
+export const getFeaturedSong = async (request: Request, response: Response): Promise<any> => {
+	const featured = request.query.featured as string[];
+
+	try {
+		const ids = await Promise.all(
+			featured.map(async (song: string) => {
+				const res = await axios.get(
+					`https://api.spotify.com/v1/search?q=${song}&type=track`,
+					{ headers: await getHeaders() }
+				);
+				return res.data.tracks.items[0].id;
+			}
+			))
+
+		const res = await axios.get(`https://api.spotify.com/v1/tracks?ids=${ids.join(",")}`, { headers: await getHeaders() });
+		return response.json(res.data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error in getFeatured: ", error.message);
+			return response.status(500).send({ message: error.message });
+		} else {
+			console.error("Error in getFeatured: ", error);
+			return response.status(500).send({ message: "Internal server error" });
+		}
+	}
+}
 
 export const getGenres = async (
 	request: Request,
@@ -173,9 +221,8 @@ export const recommendSongs = async (
 			.join(" OR ");
 
 		if (songData.length > 0 || artistData.length > 0) {
-			const query = `${songQueries}${
-				artistQueries ? ` OR ${artistQueries}` : ""
-			}`;
+			const query = `${songQueries}${artistQueries ? ` OR ${artistQueries}` : ""
+				}`;
 			res = await axios.get(
 				`https://api.spotify.com/v1/search?q=${encodeURIComponent(
 					query
