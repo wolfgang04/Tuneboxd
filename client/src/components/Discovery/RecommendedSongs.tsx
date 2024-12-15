@@ -27,8 +27,6 @@ const RecommendedSongs: React.FC<Props> = ({ rec }) => {
   useEffect(() => {
     if (rec.length > 0) {
       getRec();
-    } else {
-      setLoading(false);
     }
   }, [rec]);
 
@@ -56,7 +54,7 @@ const RecommendedSongs: React.FC<Props> = ({ rec }) => {
               <div className="flex-1">
                 <p className="font-medium cursor-pointer hover:underline" onClick={() => navigate(`/tracks/${song.id}`, { state: song.name })}>{song.name}</p>
                 <p className="text-sm text-gray-500 cursor-pointer hover:underline"
-                  onClick={() => navigate(`/artists/${song.artists[0].id}`, { state: song.artists[0].name })}>{song.artists[0].name}</p>
+                  onClick={() => navigate(`/artist/${song.artists[0].id}`, { state: song.artists[0].name })}>{song.artists[0].name}</p>
               </div>
               <button className="text-gray-500 hover:text-black">&hellip;</button>
             </div>

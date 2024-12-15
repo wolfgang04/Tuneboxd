@@ -26,7 +26,6 @@ const MusicGenres = () => {
     try {
       const res = await axios.get("http://localhost:8080/api/lastfm/randomGenres");
       setGenres(res.data);
-      console.log(res.data);
     } catch (error) {
       if (error instanceof Error)
       console.error("Error in getGenres: ", error.message);

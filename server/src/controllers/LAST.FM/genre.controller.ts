@@ -54,6 +54,25 @@ export const getTopArtistsPerGenre = async (
 	}
 };
 
+export const getTopTracksPerGenre = async (request: Request, response: Response): Promise<any> => {
+	try {
+		const { genre } = request.query;
+		const res = await axios.get(
+			`${baseUrl}?method=tag.gettoptracks&tag=${genre}&api_key=${LASTFM_API_KEY}&format=json`
+		);
+
+		return response.status(200).send(res.data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error in getTopTracksPerGenre: ", error.message);
+			return response.status(500).send({ message: error.message });
+		} else {
+			console.error("Error in getTopTracksPerGenre: ", error);
+			return response.status(500).send({ message: "Internal server error" });
+		}
+	}
+}
+
 export const randomizeTenGenres = async (request: Request, response: Response): Promise<any> => {
   const shuffled: string[] = getTenRandomGenres(genres);
   return response.status(200).send(shuffled);

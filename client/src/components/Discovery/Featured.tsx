@@ -42,7 +42,7 @@ const Featured:React.FC<Props> = ({songs}) => {
             </div>
           ))
         ) : (
-          <p>No songs available</p>
+          <p>Loading...</p>
         )}
       </div>
     </section>

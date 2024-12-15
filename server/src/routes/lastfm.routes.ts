@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getTopArtistsNearYou, getTopArtists, getArtistInfo, getSimilarArtists, getArtistTopTracks, getArtistTopAlbums } from "../controllers/LAST.FM/artist.controller";
 import { getGenres, getTopArtistsPerGenre, randomizeTenGenres } from "../controllers/LAST.FM/genre.controller";
-import { search } from "../controllers/LAST.FM/lastfm.controller";
+import { search, topArtistAndTheirAlbums } from "../controllers/LAST.FM/lastfm.controller";
 import { getSimilarSongs, getSongInfo, getTopSongs } from "../controllers/LAST.FM/songs.controller";
 import { getAlbumInfo } from "../controllers/LAST.FM/album.controller";
 
@@ -18,6 +18,7 @@ router.get("/genres", getGenres);
 router.get("/randomGenres", randomizeTenGenres);
 
 router.get("/albumInfo", getAlbumInfo);
+router.get("/topArtistsAndAlbums", topArtistAndTheirAlbums);
 
 router.get("/artistInfo", getArtistInfo);
 router.get("/similarArtists", getSimilarArtists);
