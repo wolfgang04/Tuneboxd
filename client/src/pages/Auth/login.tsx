@@ -66,6 +66,12 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => handleChangePassword(e)}
           />
+          
+          <div className={styles.options}>
+            <Link to="/resetpass" className="text-sm">
+              Forgot Password?
+            </Link>
+          </div>
 
           <button type="submit" className={styles.signInButton}>
             Log In

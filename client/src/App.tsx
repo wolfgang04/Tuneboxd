@@ -14,17 +14,20 @@ import ReviewForm from "./pages/Reviewform";
 import AlbumReview from "./pages/Songpage";
 import Login from "./pages/Auth/login";
 import SignUp from "./pages/Auth/signup";
+import ResetPass from "./pages/Auth/resetpass";
 import Account from "./components/Settings/Account";
 import Notifications from "./components/Settings/Notifications";
 import Privacy from "./components/Settings/Privacy";
 import Preferences from "./components/Settings/Preferences";
 import Auth from "./components/Auth/Auth";
+import AlbumPage from "./pages/Albumpage";
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/resetpass" element={<ResetPass />} />
       <Route path="/" element={<Auth />}>
         <Route element={<Navbar />}>
           <Route index element={<Dashboard />} />
@@ -44,6 +47,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="songpage" element={<AlbumReview />} />
+        <Route path="albumpage" element={<AlbumPage />} />
       </Route>
       <Route path="pages/Reviewform" element={<ReviewForm />} />
     </Routes>
