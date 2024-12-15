@@ -3,6 +3,63 @@ import { getUser } from "../constants";
 import { supabase } from "../utils/supabaseClient";
 import { Artist } from "../models/artist.model";
 
+export const getFollowedArtists = async (request: Request, response: Response): Promise<any> => {
+	const user = await getUser(request);
+
+	try {
+		if (!user) {
+			return response.status(401).json({ message: "Unauthorized" });
+		}
+
+		const { data, error } = await supabase
+			.from("artist")
+			.select("artist_id, name, cover")
+			.match({ user_id: user })
+			.limit(3);
+		if (error) throw error;
+
+		return response.status(200).json(data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error getting followed artists:", error.message);
+			return response
+				.status(500)
+				.json({ message: "Error getting followed artists" });
+		} else {
+			console.error("Unknown error occured", error);
+			return response
+				.status(500)
+				.json({ message: "Unknown error occured" });
+		}
+	}
+}
+
+export const getUsersFollowedArtists = async (request: Request, response: Response): Promise<any> => {
+	const { user } = request.query;
+
+	try {
+		const { data, error } = await supabase
+			.from("artist")
+			.select("artist_id, name, cover")
+			.match({ user_id: user })
+		if (error) throw error;
+
+		return response.status(200).json(data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error getting followed artists:", error.message);
+			return response
+				.status(500)
+				.json({ message: "Error getting followed artists" });
+		} else {
+			console.error("Unknown error occured", error);
+			return response
+				.status(500)
+				.json({ message: "Unknown error occured" });
+		}
+	}
+}
+
 export const followArtist = async (
 	request: Request,
 	response: Response

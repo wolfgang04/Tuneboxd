@@ -90,8 +90,7 @@ export const getFollowers = async (
 	request: Request,
 	response: Response
 ): Promise<any> => {
-	const user = await getUser(request);
-	if (!user) return response.status(401).json({ msg: "Unauthorized" });
+	const { user } = request.query;
 
 	try {
 		const { data: followers, error } = await supabase
@@ -120,8 +119,7 @@ export const getFollowing = async (
 	request: Request,
 	response: Response
 ): Promise<any> => {
-	const user = await getUser(request);
-	if (!user) return response.status(401).json({ msg: "Unauthorized" });
+	const { user } = request.query;
 
 	try {
 		const { data: following, error } = await supabase

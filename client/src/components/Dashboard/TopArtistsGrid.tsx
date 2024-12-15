@@ -1,15 +1,18 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface ArtistItem {
   name: string;
-  imageUrl: string; // New prop for image URL
+  cover: string; // New prop for image URL
+  id: string
 }
 
-const ArtistItem: React.FC<ArtistItem> = ({ name, imageUrl }) => (
+const ArtistItem: React.FC<{name: string; cover: string}> = ({ name, cover }) => (
   <div className=" flex-col grow text-xl font-semibold  text-stone-900 max-md:mt-10">
     <div className=" shrink-0 rounded-full bg-stone-900 h-[150px] w-[150px] overflow-hidden justify-center ">
       <img
-        src={imageUrl}
+        src={cover}
         alt={name}
         className="w-full h-full object-cover"
       />
@@ -21,21 +24,36 @@ const ArtistItem: React.FC<ArtistItem> = ({ name, imageUrl }) => (
 );
 
 const TopArtistsGrid: React.FC = () => {
-  const topArtists: ArtistItem[] = [
-    { name: "Hozier", imageUrl: "https://yt3.googleusercontent.com/IgZ96dSARfh3BR49o9qcJ5xuNXKSZzCF7fmrKi-9TLdidEl1u13io-uM0oOyEVdSI1Ryt0Q_lA=s900-c-k-c0x00ffffff-no-rj" },
-    { name: "Lana del Ray", imageUrl: "https://i.scdn.co/image/ab67616100005174b99cacf8acd5378206767261" },
-    { name: "Mitski", imageUrl: "https://yt3.googleusercontent.com/w23P-nr7I2D7Qjb8UhGEQIl-TWJpxjXmuHuqOam8WjSHsFWn0TUe3CtUr3d-At4C0Eog5gUrIg=s900-c-k-c0x00ffffff-no-rj" },
-  ];
+  const [artists, setArtists] = useState<ArtistItem[]>([]);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    fetchArtists();
+  }, [])
+
+  const fetchArtists = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/artist/followed", { withCredentials: true });
+      setArtists(response.data);
+    } catch (error) {
+      console.error("Error fetching top artists:", error);
+    }
+  }
 
   return (
     <div data-layername="column" className="flex flex-col ml-5 w-[45%] max-md:ml-0 max-md:w-full">
       <div className="self-stretch my-auto max-md:mt-10 max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col items-center">
-          {topArtists.map((artist, index) => (
-            <div key={index} data-layername="column" className="items-center flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-              <ArtistItem name={artist.name} imageUrl={artist.imageUrl} />
+          {artists.length === 0 ? 
+            <p>Looks like you haven't followed any artists yet</p>
+           : (
+            artists.map((artist, index) => 
+            <div key={index} data-layername="column" className="items-center flex flex-col w-[33%] max-md:ml-0 max-md:w-full"
+            onClick={() => navigate(`artist/${artist.id}`)}>
+              <ArtistItem name={artist.name} cover={artist.cover} />
             </div>
-          ))}
+            )
+           )}
         </div>
       </div>
     </div>

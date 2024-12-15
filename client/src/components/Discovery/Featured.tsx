@@ -1,31 +1,49 @@
-import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Featured = () => {
+interface Props {
+  songs: any[];
+}
+
+const Featured:React.FC<Props> = ({songs}) => {
+  const navigate = useNavigate();
+
   return (
     <section className="mb-12">
-      <h2 className="text-xl font-semibold mb-4">Featured</h2>
+      <h2 className="text-xl font-semibold mb-4 cursor-pointer hover:underline" onClick={() => navigate("featured")}>Featured</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-start pt-44 pr-12 pb-4 pl-5 w-full text-white rounded-3xl bg-stone-900 shadow-md hover:shadow-lg max-md:pt-24 max-md:pr-5 max-md:mt-2.5"
-          >
-            {/* Title */}
+        {songs.length > 0 ? (
+          songs.map((song, index) => (
             <div
-              data-layername="songTitle"
-              className="text-2xl font-bold mb-2"
+              key={index}
+              style={{ backgroundImage: `url(${song.album.images[1].url})`, backgroundSize: "cover", backgroundPosition: "center" }}
+              className="flex flex-col cursor-pointer items-start pt-44 pr-12 pb-4 pl-5 w-full text-white rounded-3xl bg-stone-900 shadow-md hover:shadow-lg max-md:pt-24 max-md:pr-5 max-md:mt-2.5"
+              onClick={() => navigate(`/track/${song.id}`, { state: song.name })}
             >
-              Title
+              {/* Title */}
+              <div
+                data-layername={song.name}
+                className="text-2xl font-bold mb-2"
+              >
+                {song.name}
+              </div>
+              {/* Artist Name */}
+              <div
+                data-layername={song.artists[0].name}
+                className="text-base text-right hover:underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/artist/${song.artists[0].id}`, { state: song.artists[0].name })
+                }}
+              >
+                {song.artists[0].name}
+              </div>
             </div>
-            {/* Artist Name */}
-            <div
-              data-layername="artistName"
-              className="text-base text-right"
-            >
-              Artist Name
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
     </section>
   );

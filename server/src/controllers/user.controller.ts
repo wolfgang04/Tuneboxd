@@ -188,3 +188,27 @@ export const changeCreds = async (
 		return response.status(500).send("Error changing credentials");
 	}
 };
+
+export const forgotPassword = async (request: Request, response: Response): Promise<any> => {
+	const { email, username, password, confirmPassword } = request.body;
+	if (password !== confirmPassword) return response.status(400).json({ msg: "Passwords do not match" });
+
+	try {
+		const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+		const { error } = await supabase.from("user")
+			.update({ password: hashedPassword })
+			.match({ email, username });
+		if (error) throw error;
+
+		return response.status(200).json({ msg: "Successfully changed password" });
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error in forgot password", error);
+			return response.status(500).json({ msg: "Error changing password" });
+		} else {
+			console.error("Error in forgot password", error);
+			return response.status(500).json({ msg: "Unidentified error occured" });
+		}
+	}
+}
