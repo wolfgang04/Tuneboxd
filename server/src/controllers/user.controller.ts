@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { request, Request, Response } from "express";
 import { supabase } from "../utils/supabaseClient";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -126,9 +126,9 @@ export const fetchUserDetails = async (
 	request: Request,
 	response: Response
 ): Promise<any> => {
-	const user = await getUser(request);
-
-	if (!user) return response.status(401).send("Unauthorized");
+	const { user } = request.body;
+	const username = await getUser(request);
+	if (!username) return response.status(401).send("Unauthorized");
 
 	try {
 		const { data: userData, error: userError } = await supabase
@@ -137,12 +137,30 @@ export const fetchUserDetails = async (
 			.eq("username", user);
 		if (userError) throw userError;
 
-		return response.json({ ...userData });
+		return response.json(userData);
 	} catch (error) {
 		console.error(error);
 		return response.status(500).send("Error fetching user details");
 	}
 };
+
+export const fetchUserImage = async (request: Request, response: Response): Promise<any> => {
+	const username = await getUser(request);
+	if (!username) return response.status(401).send("Unauthorized");
+
+	try {
+		const { data: userData, error: userError } = await supabase
+			.from("user")
+			.select("image")
+			.eq("username", username);
+		if (userError) throw userError;
+
+		return response.json(userData);
+	} catch (error) {
+		console.error(error);
+		return response.status(500).send("Error fetching user image");
+	}
+}
 
 export const changeCreds = async (
 	request: Request,

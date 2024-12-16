@@ -1,29 +1,53 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Album {
-  title: string;
-  artist: string;
+  album_id: string,
+  title: string,
+  artist: string,
+  artist_id: string,
+  cover: string
 }
 
-interface AlbumsProps {
-  albums: Album[];
-}
+const Albums = () => {
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const navigate = useNavigate();
 
-const Albums: React.FC<AlbumsProps> = ({ albums }) => (
-  <div className="mb-6">
+  useEffect(() => {
+    getLikedAlbums()
+  }, []);
+
+  const getLikedAlbums = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/album/liked");
+      setAlbums(res.data);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error getting liked albums:", error.message);
+      }
+    }
+  }
+
+  return <div className="mb-6">
     <h3 className="text-2xl font-semibold mb-2">Liked Albums</h3>
     <div className="flex gap-5 flex-wrap">
-      {albums.map((album, index) => (
+      {albums.length > 0 ? albums.map((album, index) => (
         <div
           key={index}
-          className="flex flex-col items-start justify-end w-[230px] h-[230px] p-5 text-white rounded-3xl bg-stone-900"
+          style={{ backgroundImage: `url(${album.cover})` }}
+          className="flex flex-col items-start justify-end w-[230px] cursor-pointer h-[230px] p-5 text-white rounded-3xl bg-stone-900"
         >
-          <div className="text-2xl font-bold">{album.title}</div>
-          <div className="text-base">{album.artist}</div>
+          <div className="text-2xl font-bold cursor-pointer hover:underline"
+            onClick={() => navigate(`/album/${album.album_id}`)}
+          >{album.title}</div>
+          <div className="text-base cursor-pointer hover:underline"
+            onClick={() => navigate(`/artist/${album.artist_id}`, {state: album.artist})}
+          >{album.artist}</div>
         </div>
-      ))}
+      )) : <p>No liked albums</p>}
     </div>
   </div>
-);
+};
 
 export default Albums;

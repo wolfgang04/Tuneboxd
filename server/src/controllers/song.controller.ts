@@ -2,6 +2,7 @@ import axios from "axios";
 import e, { Request, Response } from "express";
 import { supabase } from "../utils/supabaseClient";
 import { Song } from "../models/song.model";
+import { getUser } from "../constants";
 
 export const likeSong = async (
 	request: Request,
@@ -65,3 +66,25 @@ export const unlikeSong = async (
 		}
 	}
 };
+
+export const getLikedSongs = async (request: Request, response: Response): Promise<any> => {
+	const { user } = request.query;
+
+	try {
+		const { data: songs, error } = await supabase
+			.from("song")
+			.select("title, song_id, artist, artist_id, cover")
+			.match({ user_id: user });
+		if (error) throw error;
+
+		return response.status(200).json(songs);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error getting liked songs", error);
+			return response.status(500).json({ msg: "Error getting liked songs" });
+		} else {
+			console.error("Error getting liked songs", error);
+			return response.status(500).json({ msg: "Unidentified error occured" });
+		}
+	}
+}

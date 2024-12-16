@@ -36,7 +36,7 @@ export const topArtistAndTheirAlbums = async (request: Request, response: Respon
 		const topArtist = topArtistRes.data.artists.artist;
 
 		const topArtistAndAlbums = await Promise.all(topArtist.map(async (artist: any, index: number) => {
-			await delay(index * 100);
+			await delay(index * 30);
 			const artistRes = await axios.get(`${baseUrl}?method=artist.gettopalbums&artist=${artist.name}&api_key=${LASTFM_API_KEY}&format=json`);
 			const albums = artistRes.data.topalbums.album[0];
 
@@ -44,7 +44,7 @@ export const topArtistAndTheirAlbums = async (request: Request, response: Respon
 		}));
 
 		const albumsInfo = await Promise.all(topArtistAndAlbums.map(async (albums: any, index: number) => {
-			await delay(index * 100);
+			await delay(index * 30);
 			const albumInfo = await axios.get(`https://api.spotify.com/v1/search?q=${albums.name}&type=album`, { headers: await getHeaders() })
 
 			return albumInfo.data.albums.items[0];

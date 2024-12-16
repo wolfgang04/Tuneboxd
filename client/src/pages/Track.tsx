@@ -71,7 +71,7 @@ const Track = () => {
       <div>
         <h1 className="text-4xl font-bold">{track.name}</h1>
         {track.artists.map((artist: any, idx: number) => <p key={idx} className="text-lg text-gray-600 cursor-pointer hover:underline"
-          onClick={() => navigate(`/artist/${artist.id}`)}
+          onClick={() => navigate(`/artist/${artist.id}`, { state: artist.name })}
         >{artist.name}</p>)}
         <p className="text-lg text-gray-600 cursor-pointer hover:underline"
           onClick={() => navigate(`/album/${track.album.id}`)}>

@@ -25,7 +25,7 @@ const TrendingSongItem: React.FC<TrendingSong> = ({ rank, title, artist, imageUr
     <div data-layername="artistName" className="text-base text-white bg-black/50 p-2 rounded-md hover:underline"
     onClick={(e) => {
       e.stopPropagation();
-      navigate(`/artist/${artistId}`);
+      navigate(`/artist/${artistId}`, {state: artist});
     }}>{artist}</div>
   </div>
 };

@@ -55,7 +55,9 @@ const Album = () => {
         />
         <div className="ml-8">
           <h1 className="text-6xl font-bold mb-4 text-white">{album.name}</h1>
-          <p className="text-2xl text-gray-400 mb-2">{album.artists[0].name}</p>
+          <p className="text-2xl text-gray-400 mb-2 cursor-pointer hover:underline"
+            onClick={() => navigate(`/artist/${album.artists[0].id}`, {state: album.artists[0].name})}
+          >{album.artists[0].name}</p>
           <p className="text-sm text-gray-500">Released on {album.release_date}</p>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
 	changeCreds,
 	fetchUserDetails,
+	fetchUserImage,
 	forgotPassword,
 	login,
 	logout,
@@ -16,7 +17,8 @@ router.post("/login", login);
 router.get("/logout", logout);
 router.get("/status", status);
 router.post("/changeCreds", changeCreds);
-router.get("/details", fetchUserDetails);
+router.post("/details", fetchUserDetails);
+router.get("/image", fetchUserImage);
 router.post("/resetPassword", forgotPassword);
 
 export default router;

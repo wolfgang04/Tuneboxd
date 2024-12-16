@@ -32,7 +32,7 @@ const Song: React.FC<Props> = ({
   const navigate = useNavigate();
 
   const handleViewArtist = async () => {
-    navigate(`/artist/${artistID}`, { state: { artist } });
+    navigate(`/artist/${artistID}`, { state: artist });
   };
 
   const handleViewAlbum = async () => {

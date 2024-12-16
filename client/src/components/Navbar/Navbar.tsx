@@ -15,7 +15,7 @@ const Navbar = () => {
 
   const getUserImage = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/user/details", {
+      const res = await axios.get("http://localhost:8080/api/user/image", {
         withCredentials: true,
       });
 

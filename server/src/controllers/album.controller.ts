@@ -68,3 +68,25 @@ export const unlikeAlbum = async (
 		}
 	}
 };
+
+export const getLikedAlbums = async (request: Request, response: Response): Promise<any> => {
+	const {user} = request.query
+
+	try {
+		const { data: likedAlbums, error } = await supabase
+			.from("album")
+			.select("album_id, title, artist, artist_id, cover")
+			.match({ user_id: user });
+		if (error) throw error;
+
+		return response.status(200).json(likedAlbums);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error getting liked albums:", error.message);
+			return response.status(500).send("Error getting liked albums");
+		} else {
+			console.error("Unknown error occurred while getting liked albums:", error);
+			return response.status(500).send("Unknown error occurred while getting liked albums");
+		}
+	}
+}

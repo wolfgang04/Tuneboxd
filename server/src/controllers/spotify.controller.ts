@@ -5,6 +5,8 @@ import { supabase } from "../utils/supabaseClient";
 import { getRandomGenres } from "../utils/randomGenres";
 import { getUser } from "../constants";
 import { genres } from "../models/genre.model";
+import { delay } from "../utils/delay";
+import util from "util";
 
 export const search = async (
 	request: Request,
@@ -118,14 +120,8 @@ export const getArtist = async (
 			}
 		);
 
-		const discography = await axios.get(
-			`https://api.spotify.com/v1/search?q=${artist}&type=artist,track,album`,
-			{ headers: await getHeaders() }
-		);
-
 		return response.json({
-			about: res.data,
-			discography: discography.data,
+			about: res.data
 		});
 	} catch (error) {
 		console.error(error);
@@ -313,3 +309,22 @@ export const getRelatedArtists = async (
 		return response.status(500).send("Error fetching related artists");
 	}
 };
+
+export const getArtistTopAlbums = async (request: Request, response: Response): Promise<any> => {
+	const { artistId } = request.query;
+
+	try {
+		const res = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/albums`, { headers: await getHeaders(), });
+		return response.json(res.data);
+
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error in getArtistTopTracks: ", error.message);
+			console.error(util.inspect(error, { depth: null }));
+			return response.status(500).send({ message: error.message });
+		} else {
+			console.error("Error in getArtistTopTracks: ", error);
+			return response.status(500).send({ message: "Internal server error" });
+		}
+	}
+}
