@@ -11,7 +11,6 @@ import Community from "./pages/Community";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import ReviewForm from "./pages/Reviewform";
-import AlbumReview from "./pages/Songpage";
 import Login from "./pages/Auth/login";
 import SignUp from "./pages/Auth/signup";
 import ResetPass from "./pages/Auth/resetpass";
@@ -20,7 +19,6 @@ import Notifications from "./components/Settings/Notifications";
 import Privacy from "./components/Settings/Privacy";
 import Preferences from "./components/Settings/Preferences";
 import Auth from "./components/Auth/Auth";
-import AlbumPage from "./pages/Albumpage";
 
 function App() {
   return (
@@ -44,10 +42,8 @@ function App() {
             <Route path="privacy" element={<Privacy />} />
             <Route path="preferences" element={<Preferences />} />
           </Route>
-          <Route path="profile" element={<Profile />} />
+          <Route path=":username" element={<Profile />} />
         </Route>
-        <Route path="songpage" element={<AlbumReview />} />
-        <Route path="albumpage" element={<AlbumPage />} />
       </Route>
       <Route path="pages/Reviewform" element={<ReviewForm />} />
     </Routes>

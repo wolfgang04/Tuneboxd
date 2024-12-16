@@ -2,6 +2,7 @@ import axios from "axios";
 import { request, Request, Response } from "express";
 import { LASTFM_API_KEY } from "../../constants";
 import { getHeaders } from "../../utils/spotifyToken";
+import { delay } from "../../utils/delay";
 
 export const baseUrl = "http://ws.audioscrobbler.com/2.0/";
 
@@ -34,14 +35,16 @@ export const topArtistAndTheirAlbums = async (request: Request, response: Respon
 		const topArtistRes = await axios.get(`${baseUrl}?method=chart.gettopartists&api_key=${LASTFM_API_KEY}&format=json`);
 		const topArtist = topArtistRes.data.artists.artist;
 
-		const topArtistAndAlbums = await Promise.all(topArtist.map(async (artist: any) => {
+		const topArtistAndAlbums = await Promise.all(topArtist.map(async (artist: any, index: number) => {
+			await delay(index * 100);
 			const artistRes = await axios.get(`${baseUrl}?method=artist.gettopalbums&artist=${artist.name}&api_key=${LASTFM_API_KEY}&format=json`);
 			const albums = artistRes.data.topalbums.album[0];
 
 			return albums;
 		}));
 
-		const albumsInfo = await Promise.all(topArtistAndAlbums.map(async (albums: any) => {
+		const albumsInfo = await Promise.all(topArtistAndAlbums.map(async (albums: any, index: number) => {
+			await delay(index * 100);
 			const albumInfo = await axios.get(`https://api.spotify.com/v1/search?q=${albums.name}&type=album`, { headers: await getHeaders() })
 
 			return albumInfo.data.albums.items[0];

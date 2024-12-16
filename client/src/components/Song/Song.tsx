@@ -13,6 +13,12 @@ interface Props {
   cover: string;
 }
 
+export const formatDuration = (ms: number) => {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+};
+
 const Song: React.FC<Props> = ({
   title,
   artist,
@@ -24,12 +30,6 @@ const Song: React.FC<Props> = ({
   albumID,
 }) => {
   const navigate = useNavigate();
-
-  const formatDuration = (ms: number) => {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
 
   const handleViewArtist = async () => {
     navigate(`/artist/${artistID}`, { state: { artist } });

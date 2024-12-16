@@ -119,7 +119,7 @@ export const status = async (
 ): Promise<any> => {
 	return !request.session.user
 		? response.status(401).json({ msg: "Unauthorized" })
-		: response.status(200).json({ msg: "Authorized" });
+		: response.status(200).json({ msg: "Authorized", user: request.session.user });
 };
 
 export const fetchUserDetails = async (

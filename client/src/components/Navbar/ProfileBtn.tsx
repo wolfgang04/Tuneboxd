@@ -9,9 +9,17 @@ interface Props {
 const ProfileBtn: React.FC<Props> = ({ isOpen }) => {
   const navigate = useNavigate();
 
-  const handleProfileClick = () => {
+  const handleProfileClick = async () => {
     // Handle profile click
-    navigate("/profile");
+    try {
+      const res = await axios.get("http://localhost:8080/api/user/status", {
+        withCredentials: true,
+      });
+
+      navigate(`/${res.data.user}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleLogoutClick = async () => {
