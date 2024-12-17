@@ -32,7 +32,7 @@ redisClient.on("error", () => {
 app.use(express.json());
 app.use(
 	cors({
-		origin: "https://tuneboxd-l1yf-hix6fhc43-andrews-projects-a942bd63.vercel.app",
+		origin: "https://tuneboxd-client-phxstm7rr-andrews-projects-a942bd63.vercel.app/",
 		credentials: true,
 	})
 );
