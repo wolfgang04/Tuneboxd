@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MusicGenres from '../../components/Discovery/MusicGenres';
 import Featured from '../../components/Discovery/Featured';
 import RecommendedSongs from '../../components/Discovery/RecommendedSongs';

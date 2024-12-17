@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import SongHeader from "../../components/Song/SongHeader";
 import Song from "../../components/Song/Song";
