@@ -32,7 +32,7 @@ redisClient.on("error", () => {
 app.use(express.json());
 app.use(
 	cors({
-		origin: "http://localhost:3000",
+		origin: "https://tuneboxd-l1yf.vercel.app/",
 		credentials: true,
 	})
 );
@@ -44,7 +44,7 @@ app.use(
 		cookie: {
 			maxAge: 1000 * 60 * 60 * 24,
 			httpOnly: true,
-			secure: false,
+			secure: true,
 			sameSite: "lax",
 		},
 		saveUninitialized: false,

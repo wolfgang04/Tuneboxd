@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/Login.module.css";
 import axios from "axios";
+import server from "../../SERVER";
 
 const Login: React.FC = () => {
   const [username, setUsername] = React.useState("");
@@ -21,7 +22,7 @@ const Login: React.FC = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/user/login",
+        `${server}user/login`,
         {
           username,
           password,

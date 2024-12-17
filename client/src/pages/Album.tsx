@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { formatDuration } from "../components/Song/Song";
+import server from "../SERVER";
 
 interface Song {
   name: string;
@@ -20,7 +21,7 @@ const Album = () => {
   const fetchAlbum = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/spotify/album",
+        `${server}spotify/album`,
         {
           params: { id: albumID },
         },
@@ -51,7 +52,7 @@ const Album = () => {
     if (!isLiked) {
       try {
         await axios.post(
-          "http://localhost:8080/api/album/like",
+          `${server}album/like`,
           { ...Album },
           { withCredentials: true }
         );
@@ -63,7 +64,7 @@ const Album = () => {
     } else {
       try {
         await axios.post(
-          "http://localhost:8080/api/album/unlike",
+          `${server}album/unlike`,
           { album_id: albumID },
           { withCredentials: true }
         );
@@ -78,7 +79,7 @@ const Album = () => {
   const fetchIsLiked = useCallback(async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:8080/api/album/isLiked",
+        `${server}album/isLiked`,
         { album_id: albumID },
         { withCredentials: true }
       );

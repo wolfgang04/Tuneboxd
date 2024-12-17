@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import SongHeader from "../../components/Song/SongHeader";
 import Song from "../../components/Song/Song";
+import server from "../../SERVER";
 
 const GenreSong = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -14,7 +15,7 @@ const GenreSong = () => {
   const fetchSongs = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/spotify/recommendSongs",
+        `${server}spotify/recommendSongs`,
         {
           params: { seed_genres: genre },
         },

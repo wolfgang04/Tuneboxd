@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Songs from "../components/Artist/Songs";
 import Albums from "../components/Artist/Albums";
+import server from "../SERVER";
 
 const Artist = () => {
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
@@ -17,16 +18,16 @@ const Artist = () => {
   const fetchArtist = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/spotify/artist",
+        `${server}spotify/artist`,
         {
           params: { artist: artistName, id: artistID },
         },
       );
       setArtist(data);
 
-      const { data: popSongs } = await axios.get("http://localhost:8080/api/spotify/search", { params: { searchQuery: data.about.name } });
+      const { data: popSongs } = await axios.get(`${server}spotify/search`, { params: { searchQuery: data.about.name } });
       setTopSongs(popSongs.tracks.items);
-      const { data: topAlbums } = await axios.get("http://localhost:8080/api/spotify/artistTopAlbums", { params: { artistId: artistID } })
+      const { data: topAlbums } = await axios.get(`${server}spotify/artistTopAlbums`, { params: { artistId: artistID } })
       setAlbums(topAlbums.items);
     } catch (error) {
       console.error(error);
@@ -49,7 +50,7 @@ const Artist = () => {
     
     if (!isFollowing) {
       try {
-        await axios.post("http://localhost:8080/api/artist/follow",
+        await axios.post(`${server}artist/follow`,
           { ...Artist }, { withCredentials: true }
         )
 
@@ -59,7 +60,7 @@ const Artist = () => {
       }
     } else {
       try {
-        await axios.post("http://localhost:8080/api/artist/unfollow",
+        await axios.post(`${server}artist/unfollow`,
           { ...Artist }, { withCredentials: true }
         )
         setIsFollowing(false);
@@ -71,7 +72,7 @@ const Artist = () => {
 
   const followStatus = async () => {
     try {
-      const { data } = await axios.post("http://localhost:8080/api/artist/isFollowing", {
+      const { data } = await axios.post(`${server}artist/isFollowing`, {
         artist_id: artistID,
       }, { withCredentials: true });
 

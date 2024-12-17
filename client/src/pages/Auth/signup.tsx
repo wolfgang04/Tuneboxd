@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../../styles/Login.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import server from "../../SERVER";
 
 const SignUp = () => {
   const [email, setEmail] = React.useState("");
@@ -37,7 +38,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/api/user/signup", {
+      const res = await axios.post(`${server}user/signup`, {
         email,
         username,
         password,

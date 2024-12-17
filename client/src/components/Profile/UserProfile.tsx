@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { User } from "../../pages/Profile";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import server from "../../SERVER";
 
 interface UserProfileProps {
   currUser: string;
@@ -27,7 +28,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   const followingStatus = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/follow/status",
+        `${server}follow/status`,
         { username: details.username }, { withCredentials: true }
       );
 
@@ -46,7 +47,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     } else {
       try {
         const res = await axios.post(
-          "http://localhost:8080/api/follow/follow",
+          `${server}follow/follow`,
           {
             username: details.username,
           },
@@ -71,8 +72,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   const fetchUserDetails = async () => {
     try {
-      const { data: followers } = await axios.get("http://localhost:8080/api/follow/getFollowers", { params: { user } });
-      const { data: following } = await axios.get("http://localhost:8080/api/follow/getfollowing", { params: { user } });
+      const { data: followers } = await axios.get(`${server}follow/getFollowers`, { params: { user } });
+      const { data: following } = await axios.get(`${server}follow/getfollowing`, { params: { user } });
 
       setFollowers(followers.followers.length);
       setFollowing(following.following.length);

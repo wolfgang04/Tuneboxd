@@ -8,6 +8,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Songs from "../components/Profile/Likes/Songs";
 import Albums from "../components/Profile/Likes/Albums";
 import Artists from "../components/Profile/Likes/Artists";
+import server from "../SERVER";
 
 export interface User {
   username: string;
@@ -24,10 +25,10 @@ const Profile = () => {
 
   const fetchUserDetails = useCallback(async () => {
     try {
-      const res = await axios.post("http://localhost:8080/api/user/details", { user: username }, {
+      const res = await axios.post(`${server}user/details`, { user: username }, {
         withCredentials: true,
       });
-      const { data: user } = await axios.get("http://localhost:8080/api/user/status", { withCredentials: true });
+      const { data: user } = await axios.get(`${server}user/status`, { withCredentials: true });
 
       setUser(res.data);
       setIsUser(user.user);

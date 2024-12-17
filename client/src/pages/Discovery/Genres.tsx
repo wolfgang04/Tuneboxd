@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Genre from "../../components/Genres/Genre";
+import server from "../../SERVER";
 
 const Genres = () => {
   const [isLoading, setIsLoading] = useState<boolean | null>(null);
@@ -10,7 +11,7 @@ const Genres = () => {
 
   const fetchGenres = async () => {
     setIsLoading(true);
-    const { data } = await axios.get("http://localhost:8080/api/spotify/genre");
+    const { data } = await axios.get(`${server}spotify/genre`);
     setGenres(data.genres);
     setIsLoading(false);
   };

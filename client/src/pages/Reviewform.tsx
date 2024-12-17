@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
+import server from "../SERVER";
 
 const ReviewForm: React.FC = () => {
   const location = useLocation();
@@ -22,7 +23,7 @@ const ReviewForm: React.FC = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:8080/api/review/create",
+      await axios.post(`${server}review/create`,
         { mediatype_id: prevPath, content: reviewText, rating }, { withCredentials: true }
       )
 

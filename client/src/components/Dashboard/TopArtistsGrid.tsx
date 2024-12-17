@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import server from '../../SERVER';
 
 interface ArtistItem {
   name: string;
@@ -33,7 +34,7 @@ const TopArtistsGrid: React.FC = () => {
 
   const fetchArtists = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/artist/followed", { withCredentials: true });
+      const response = await axios.get(`${server}artist/followed`, { withCredentials: true });
       setArtists(response.data);
     } catch (error) {
       console.error("Error fetching top artists:", error);

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import server from '../../SERVER';
 
 interface Props {
   rec: string[];
@@ -14,7 +15,7 @@ const RecommendedSongs: React.FC<Props> = ({ rec }) => {
 
   const getRec = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/spotify/recommend", { params: { song: rec } });
+      const res = await axios.get(`${server}spotify/recommend`, { params: { song: rec } });
       setRecommended(res.data.tracks.items.slice(0, 8));
       setLoading(false);
     } catch (error) {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import server from "../../SERVER";
 
 const MusicGenres = () => {
   const [genres, setGenres] = useState<string[]>([])
@@ -24,7 +25,7 @@ const MusicGenres = () => {
   
   const getGenres = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/lastfm/randomGenres");
+      const res = await axios.get(`${server}lastfm/randomGenres`);
       setGenres(res.data);
     } catch (error) {
       if (error instanceof Error)

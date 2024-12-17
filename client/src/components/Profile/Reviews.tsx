@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import server from "../../SERVER";
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -13,7 +14,7 @@ const Reviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8080/api/review/getUsers", { params: { user_id } });
+      const { data } = await axios.get(`${server}review/getUsers`, { params: { user_id } });
       setReviews(data);
 
     } catch (error) {

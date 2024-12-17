@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import server from "../../SERVER";
 
 const Auth = () => {
   const navigate = useNavigate();
 
   const checkStatus = async () => {
     try {
-      await axios.get("http://localhost:8080/api/user/status", {
+      await axios.get(`${server}user/status`, {
         withCredentials: true,
       });
     } catch (error) {

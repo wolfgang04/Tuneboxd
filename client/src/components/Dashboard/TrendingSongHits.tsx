@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import server from '../../SERVER';
 
 interface TrendingSong {
   rank: string;
@@ -40,11 +41,11 @@ const TrendingSongHits: React.FC = () => {
 
   const fetchTrendingSongs = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8080/api/lastfm/topSongs");
+      const { data } = await axios.get(`${server}lastfm/topSongs`);
       const songs = data.song.tracks.track.slice(0, 6);
       const songNames = songs.map((song: any) => song.name);
 
-      const { data: topData } = await axios.get("http://localhost:8080/api/spotify/featuredSongs", { params: { featured: songNames } });
+      const { data: topData } = await axios.get(`${server}spotify/featuredSongs`, { params: { featured: songNames } });
       setTrendingSongs(topData.tracks.map((track: any, index: number) => {
         return {
           rank: `${index + 1}`.padStart(2, '0'),

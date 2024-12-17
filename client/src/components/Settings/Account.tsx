@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import server from "../../SERVER";
 
 const Account = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -12,7 +13,7 @@ const Account = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/user/details", {
+      const res = await axios.get(`${server}user/details`, {
         withCredentials: true,
       });
 
@@ -38,7 +39,7 @@ const Account = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/user/changeCreds",
+        `${server}user/changeCreds`,
         {
           username,
           email,

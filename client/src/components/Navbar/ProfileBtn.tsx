@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import server from "../../SERVER";
 
 interface Props {
   isOpen: boolean;
@@ -12,7 +13,7 @@ const ProfileBtn: React.FC<Props> = ({ isOpen }) => {
   const handleProfileClick = async () => {
     // Handle profile click
     try {
-      const res = await axios.get("http://localhost:8080/api/user/status", {
+      const res = await axios.get(`${server}api/user/status`, {
         withCredentials: true,
       });
 
@@ -24,7 +25,7 @@ const ProfileBtn: React.FC<Props> = ({ isOpen }) => {
 
   const handleLogoutClick = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/user/logout", {
+      const res = await axios.get(`${server}api/user/logout`, {
         withCredentials: true,
       });
 

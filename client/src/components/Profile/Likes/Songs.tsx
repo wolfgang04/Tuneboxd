@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
+import server from "../../../SERVER";
 
 interface Song {
   title: string;
@@ -21,7 +22,7 @@ const Songs = () => {
 
   const fetchSongs = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/song/likes", { params: { user } });
+      const res = await axios.get(`${server}song/likes`, { params: { user } });
       setLikedSongs(res.data);
     } catch (error) {
       console.error(error);

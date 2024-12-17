@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import ProfileBtn from "./ProfileBtn";
+import server from "../../SERVER";
 
 const Navbar = () => {
   const [userImage, setUserImage] = useState<string | null>(null);
@@ -15,7 +16,7 @@ const Navbar = () => {
 
   const getUserImage = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/user/image", {
+      const res = await axios.get(`${server}user/image`, {
         withCredentials: true,
       });
 

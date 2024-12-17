@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import server from "../../../SERVER";
 
 interface Album {
   album_id: string,
@@ -22,7 +23,7 @@ const Albums = () => {
 
   const getLikedAlbums = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/album/liked", { params: { user } });
+      const res = await axios.get(`${server}album/liked`, { params: { user } });
       setAlbums(res.data);
     } catch (error) {
       if (error instanceof Error) {

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { formatDuration } from "../components/Song/Song";
+import server from "../SERVER";
 
 interface Review {
   user_id: string;
@@ -44,7 +45,7 @@ const Track = () => {
     };
     try {
       if (!isLiked) {
-        const res = await axios.post("http://localhost:8080/api/song/like", {
+        const res = await axios.post(`${server}song/like`, {
           ...song
         }, { withCredentials: true });
 
@@ -52,7 +53,7 @@ const Track = () => {
           setIsLiked(true);
         }
       } else {
-        const res = await axios.post("http://localhost:8080/api/song/unlike", { ...song }, { withCredentials: true });
+        const res = await axios.post(`${server}song/unlike`, { ...song }, { withCredentials: true });
         if (res.status === 200) {
           setIsLiked(false);
         }
@@ -65,7 +66,7 @@ const Track = () => {
   const fetchTrack = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/spotify/track",
+        `${server}spotify/track`,
         {
           params: { id: trackID },
         },
@@ -82,7 +83,7 @@ const Track = () => {
 
   const likedStatus = async () => {
     try {
-      const res = await axios.post("http://localhost:8080/api/song/isLiked",
+      const res = await axios.post(`${server}song/isLiked`,
         { song_id: trackID }, { withCredentials: true });
       setIsLiked(res.data.isLiked);
     } catch (error) {
@@ -92,7 +93,7 @@ const Track = () => {
 
   const fetchReviews = useCallback(async () => {
     try {
-      const { data } = await axios.get("http://localhost:8080/api/review/getSong", { params: { song_id: trackID } });
+      const { data } = await axios.get(`${server}review/getSong`, { params: { song_id: trackID } });
       console.log(data);
       setReviews(data);
     } catch (error) {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import server from "../../SERVER";
 
 interface CarouselItemProps {
   src: string;
@@ -57,7 +58,7 @@ const Carousel: React.FC = () => {
 
   const fetchTopAlbums = async () => {
     try {
-      const { ids, covers } = (await axios.get("http://localhost:8080/api/lastfm/topArtistsAndAlbums")).data;
+      const { ids, covers } = (await axios.get(`${server}lastfm/topArtistsAndAlbums`)).data;
 
       const combined = ids.map((id: number, index: number) => ({ id, cover: covers[index] }));
       const shuffled = combined.sort(() => 0.5 - Math.random()).slice(0, 10);

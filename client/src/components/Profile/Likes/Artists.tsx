@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import server from "../../../SERVER";
 
 interface Artists {
   artist_id: string;
@@ -19,7 +20,7 @@ const Artists = () => {
 
   const fetchArtists = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/artist/usersFollowed", { params: { user: username} });
+      const res = await axios.get(`${server}artist/usersFollowed`, { params: { user: username} });
 
       setArtists(res.data);
     } catch (error) {

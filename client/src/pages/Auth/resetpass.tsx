@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../../styles/Login.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import server from "../../SERVER";
 
 const ResetPass: React.FC = () => {
   const [email, setEmail] = React.useState("");
@@ -19,7 +20,7 @@ const ResetPass: React.FC = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/api/user/resetPassword",
+      const response = await axios.post(`${server}user/resetPassword`,
         { email, username, password, confirmPassword },
         { withCredentials: true });
 
