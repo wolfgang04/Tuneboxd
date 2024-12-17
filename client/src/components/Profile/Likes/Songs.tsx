@@ -35,7 +35,7 @@ const Songs = () => {
         {likedSongs.length > 0 ? likedSongs.map((song: Song, index) => (
           <div
             key={index}
-            style={{ backgroundImage: `url(${song.cover})` }}
+            style={{ backgroundImage: `url(${song.cover})`, backgroundSize: "cover" }}
             className="flex flex-col items-start justify-end w-[230px] h-[230px] p-5 text-white rounded-3xl"
           >
             <div className="text-2xl font-bold cursor-pointer hover:underline"

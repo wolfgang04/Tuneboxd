@@ -24,7 +24,6 @@ import Playlists from "./components/Profile/Playlists";
 import Songs from "./components/Profile/Likes/Songs";
 import Albums from "./components/Profile/Likes/Albums";
 import Artists from "./components/Profile/Likes/Artists";
-import ArtistSongs from "./components/Artist/Songs";
 import PlaylistPage from "./pages/Discovery/PlaylistPage";
 
 function App() {
@@ -58,9 +57,9 @@ function App() {
               <Route path="artists" element={<Artists />} />
             </Route>
           </Route>
+          <Route path="pages/Reviewform" element={<ReviewForm />} />
+          <Route path="playlist/:id" element={<PlaylistPage />} />
         </Route>
-        <Route path="pages/Reviewform" element={<ReviewForm />} />
-        <Route path="playlists/:id" element={<PlaylistPage />} />
       </Route>
     </Routes>
   );

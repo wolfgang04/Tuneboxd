@@ -1,20 +1,18 @@
 import axios from "axios";
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { formatDuration } from "../components/Song/Song";
 import Songs from "../components/Artist/Songs";
 import Albums from "../components/Artist/Albums";
 
 const Artist = () => {
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [relatedArtists, setRelatedArtists] = useState<any>([]);
   const [artist, setArtist] = useState<any>({});
   const [topSongs, setTopSongs] = useState<any>([]);
   const [albums, setAlbums] = useState<any>([]);
   const location = useLocation();
   const artistID = location.pathname.slice(8);
   const artistName = location.state.artist;
-  const navigate = useNavigate();
 
   const fetchArtist = useCallback(async () => {
     try {
@@ -24,19 +22,12 @@ const Artist = () => {
           params: { artist: artistName, id: artistID },
         },
       );
-      const { data: relatedArtists } = await axios.get(
-        "http://localhost:8080/api/spotify/relatedArtists",
-        { params: { id: artistID } },
-      );
       setArtist(data);
 
       const { data: popSongs } = await axios.get("http://localhost:8080/api/spotify/search", { params: { searchQuery: data.about.name } });
       setTopSongs(popSongs.tracks.items);
       const { data: topAlbums } = await axios.get("http://localhost:8080/api/spotify/artistTopAlbums", { params: { artistId: artistID } })
-      console.log(artist);
-
       setAlbums(topAlbums.items);
-      setRelatedArtists(relatedArtists);
     } catch (error) {
       console.error(error);
     } finally {
@@ -46,7 +37,49 @@ const Artist = () => {
 
   useEffect(() => {
     fetchArtist();
+    followStatus();
   }, [artistID, fetchArtist]);
+
+  const handleFollow = async () => {
+    const Artist = {
+      name: artist.about.name,
+      artist_id: artistID,
+      cover: artist.about.images[0].url,
+    }
+    
+    if (!isFollowing) {
+      try {
+        await axios.post("http://localhost:8080/api/artist/follow",
+          { ...Artist }, { withCredentials: true }
+        )
+
+        setIsFollowing(true);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await axios.post("http://localhost:8080/api/artist/unfollow",
+          { ...Artist }, { withCredentials: true }
+        )
+        setIsFollowing(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  const followStatus = async () => {
+    try {
+      const { data } = await axios.post("http://localhost:8080/api/artist/isFollowing", {
+        artist_id: artistID,
+      }, { withCredentials: true });
+
+      setIsFollowing(data)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -73,15 +106,15 @@ const Artist = () => {
             </div>
           </div>
 
-          {/* <button
-            onClick={handleFollowToggle}
+          <button
+            onClick={() => handleFollow()}
             className={`mt-2 sm:mt-0 py-2 px-6 rounded transition-colors duration-200 ${isFollowing
               ? "bg-black text-white hover:bg-gray-800"
               : "bg-gray-200 text-black hover:bg-gray-300"
               }`}
           >
-            {isFollowing ? "Unfollow" : "Follow"}
-          </button> */}
+            {isFollowing !== null && (isFollowing ? "Unfollow" : "Follow")}
+          </button>
         </div>
       </div>
     </div>

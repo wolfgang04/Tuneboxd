@@ -12,9 +12,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
   currUser,
   details,
 }) => {
-  const [isFollowing, setIsFollowing] = useState<boolean | null>(false);
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [count, setCount] = useState({ followers: 0, following: 0 });
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
   const user = useLocation().pathname.split("/")[1];
   const ownProfile = currUser === details.username;
 
@@ -51,18 +52,17 @@ const UserProfile: React.FC<UserProfileProps> = ({
           },
           { withCredentials: true },
         );
+        const userFollowers = res.data.data.filter(
+          (user: { following: string, follower: string }) => user.following === details.username);
 
-        console.log(res);
-        // setCount((prevCount) => {
-        //   return { ...prevCount, followers: res.data.length }
-        // })
-        // setIsFollowing(() => {
-        //   if (res.data.msg === "Followed") {
-        //     return true;
-        //   } else {
-        //     return false;
-        //   }
-        // });
+        setFollowers(userFollowers.length);
+        setIsFollowing(() => {
+          if (res.data.msg === "Followed user") {
+            return true;
+          } else {
+            return false;
+          }
+        });
       } catch (error) {
         console.error(error);
       }
@@ -71,20 +71,17 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   const fetchUserDetails = async () => {
     try {
-      const { data: followers } = await axios.get("http://localhost:8080/api/follow/getFollowers");
-      const { data: following } = await axios.get("http://localhost:8080/api/follow/getfollowing");
+      const { data: followers } = await axios.get("http://localhost:8080/api/follow/getFollowers", { params: { user } });
+      const { data: following } = await axios.get("http://localhost:8080/api/follow/getfollowing", { params: { user } });
 
-      // console.log(followers, following);
-      
-      setCount({ followers: followers.followers.length, following: following.following.length });
+      setFollowers(followers.followers.length);
+      setFollowing(following.following.length);
     } catch (error) {
       console.error(error);
     }
   }
 
-  if (isLoading) {
-    return <span className="loading loading-spinner loading-lg" />;
-  }
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="flex flex-col items-center">
@@ -96,11 +93,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
       <h1 className="text-center text-xl font-bold">{user}</h1>
       <div className="mt-4 flex w-full justify-center gap-x-12 text-center">
         <div>
-          <p className="font-bold">{count.followers}</p>
+          <p className="font-bold">{followers}</p>
           <p className="text-sm text-gray-600">Followers</p>
         </div>
         <div>
-          <p className="font-bold">{count.following}</p>
+          <p className="font-bold">{following}</p>
           <p className="text-sm text-gray-600">Following</p>
         </div>
       </div>
@@ -110,7 +107,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           className={`mt-6 rounded px-6 py-2 ${isFollowing ? "bg-black text-white" : "bg-black text-white"
             }`}
         >
-          {isFollowing ? "Unfollow" : "Follow"}
+          {isFollowing != null && (isFollowing ? "Unfollow" : "Follow")}
         </button>
       )}
     </div>

@@ -10,6 +10,7 @@ interface Song {
 }
 
 const Album = () => {
+  const [isLiked, setIsLiked] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [album, setAlbum] = useState<any>({});
   const location = useLocation();
@@ -35,7 +36,59 @@ const Album = () => {
 
   useEffect(() => {
     fetchAlbum();
+    fetchIsLiked();
   }, [albumID, fetchAlbum]);
+
+  const handleLike = async () => {
+    const Album = {
+      title: album.name,
+      artist: album.artists[0].name,
+      artist_id: album.artists[0].id,
+      cover: album.images[0].url,
+      album_id: albumID,
+      release_date: album.release_date,
+    };
+
+    if (!isLiked) {
+      try {
+        await axios.post(
+          "http://localhost:8080/api/album/like",
+          { ...Album },
+          { withCredentials: true }
+        );
+
+        setIsLiked(true);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await axios.post(
+          "http://localhost:8080/api/album/unlike",
+          { album_id: albumID },
+          { withCredentials: true }
+        );
+
+        setIsLiked(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  const fetchIsLiked = useCallback(async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8080/api/album/isLiked",
+        { album_id: albumID },
+        { withCredentials: true }
+      );
+
+      setIsLiked(data);
+    } catch (error) {
+      console.error(error);
+    }
+  },[])
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -58,7 +111,16 @@ const Album = () => {
           <p className="text-2xl text-gray-400 mb-2 cursor-pointer hover:underline"
             onClick={() => navigate(`/artist/${album.artists[0].id}`, {state: album.artists[0].name})}
           >{album.artists[0].name}</p>
-          <p className="text-sm text-gray-500">Released on {album.release_date}</p>
+          <p className="text-sm mb-5 text-gray-500">Released on {album.release_date}</p>
+            <button
+            onClick={() => handleLike()}
+            className={`mt-2 sm:mt-0 py-2 px-6 rounded transition-colors duration-200 ${isLiked
+              ? "bg-gray-300 text-black hover:bg-gray-400"
+              : "bg-gray-700 text-white hover:bg-gray-600"
+              }`}
+            >
+            {isLiked !== null && (isLiked ? "Unlike" : "Like")}
+            </button>
         </div>
       </div>
 

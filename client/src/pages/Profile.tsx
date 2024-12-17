@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UserProfile from "../components/Profile/UserProfile";
 import Playlists from "../components/Profile/Playlists";
 import Reviews from "../components/Profile/Reviews";
@@ -22,7 +22,7 @@ const Profile = () => {
   const [isUser, setIsUser] = useState<string>("");
   const username = useLocation().pathname.split("/")[1];
 
-  const fetchUserDetails = async () => {
+  const fetchUserDetails = useCallback(async () => {
     try {
       const res = await axios.post("http://localhost:8080/api/user/details", { user: username }, {
         withCredentials: true,
@@ -30,14 +30,14 @@ const Profile = () => {
       const { data: user } = await axios.get("http://localhost:8080/api/user/status", { withCredentials: true });
 
       setUser(res.data);
-      setIsUser(user.user);      
+      setIsUser(user.user);
     } catch (error) {
       console.error(error);
       setUser(null)
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [username]);
 
   useEffect(() => {
     fetchUserDetails();

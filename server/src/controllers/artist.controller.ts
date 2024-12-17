@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getUser } from "../constants";
 import { supabase } from "../utils/supabaseClient";
 import { Artist } from "../models/artist.model";
+import { request } from "http";
 
 export const getFollowedArtists = async (request: Request, response: Response): Promise<any> => {
 	const user = await getUser(request);
@@ -65,7 +66,7 @@ export const followArtist = async (
 	response: Response
 ): Promise<any> => {
 	const artistData: Artist = request.body;
-	const user_id = getUser(request);
+	const user_id = await getUser(request);
 
 	try {
 		if (!user_id) {
@@ -98,7 +99,7 @@ export const unfollowArtist = async (
 	response: Response
 ): Promise<any> => {
 	const artistData: Artist = request.body;
-	const user_id = getUser(request);
+	const user_id = await getUser(request);
 
 	try {
 		if (!user_id) {
@@ -126,3 +127,31 @@ export const unfollowArtist = async (
 		}
 	}
 };
+
+export const isFollowingArtist = async (request: Request, response: Response): Promise<any> => {
+	const { artist_id } = request.body;
+	const user = await getUser(request);
+	if (!user) return response.status(401).json({ message: "Unauthorized" });
+
+	try {
+		const { data, error } = await supabase
+			.from("artist")
+			.select("artist_id")
+			.match({ artist_id, user_id: user });
+		if (error) throw error;
+
+		return response.status(200).json(data.length > 0);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error checking if user is following artist:", error.message);
+			return response
+				.status(500)
+				.json({ message: "Error checking if user is following artist" });
+		} else {
+			console.error("Unknown error occured", error);
+			return response
+				.status(500)
+				.json({ message: "Unknown error occured" });
+		}
+	}
+}

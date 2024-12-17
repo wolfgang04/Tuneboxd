@@ -19,6 +19,7 @@ const reviewsData: Review[] = [
 
 const Track = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLiked, setIsLiked] = useState<boolean | null>(null);
   const [track, setTrack] = useState<any>({});
   const location = useLocation();
   const trackID = location.pathname.slice(7);
@@ -28,7 +29,6 @@ const Track = () => {
 
   // Retrieve reviews passed through navigation state or fallback to static data
   const reviews = location.state?.reviews || reviewsData;
-  const [songLikes, setSongLikes] = useState<number>(0);
 
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortOption === "highest") return b.rating - a.rating;
@@ -37,8 +37,32 @@ const Track = () => {
     return 0;
   });
 
-  const handleSongLike = () => {
-    setSongLikes((prevLikes) => prevLikes + 1);
+  const handleSongLike = async () => {
+    // setSongLikes((prevLikes) => prevLikes + 1);
+    const song = {
+      title: track.name, song_id: trackID,
+      artist: track.artists[0].name, artist_id: track.artists[0].id,
+      album: track.album.name, album_id: track.album.id,
+      cover: track.album.images[0].url
+    };
+    try {
+      if (!isLiked) {
+        const res = await axios.post("http://localhost:8080/api/song/like", {
+          ...song
+        }, { withCredentials: true });
+
+        if (res.status === 201) {
+          setIsLiked(true);
+        }
+      } else {
+        const res = await axios.post("http://localhost:8080/api/song/unlike", { ...song }, { withCredentials: true });
+        if (res.status === 200) {
+          setIsLiked(false);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const fetchTrack = useCallback(async () => {
@@ -51,7 +75,6 @@ const Track = () => {
       );
 
       setTrack(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -59,8 +82,20 @@ const Track = () => {
     }
   }, [trackID]);
 
+
+  const likedStatus = async () => {
+    try {
+      const res = await axios.post("http://localhost:8080/api/song/isLiked",
+        { song_id: trackID }, { withCredentials: true });
+      setIsLiked(res.data.isLiked);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     fetchTrack();
+    likedStatus()
   }, [trackID, fetchTrack]);
 
   if (isLoading) return <p>Loading...</p>;
@@ -88,11 +123,10 @@ const Track = () => {
         <div className="mt-4">
           <button
             className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-            onClick={handleSongLike}
+            onClick={() => handleSongLike()}
           >
-            Like
+            {isLiked !== null && (isLiked ? "Unlike" : "Like")}
           </button>
-          <span className="ml-2 text-gray-700">{songLikes} Likes</span>
         </div>
 
       </div>

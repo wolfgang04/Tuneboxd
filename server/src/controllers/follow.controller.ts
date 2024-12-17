@@ -20,26 +20,36 @@ export const follow = async (
 		if (existingFollowError) throw existingFollowError;
 
 		if (existingFollow && existingFollow.length > 0) {
-			const { data: followData, error: unfollowError } = await supabase
+			const { error: unfollowError } = await supabase
 				.from("following")
 				.delete()
 				.match({ follower: user, following: username })
-				.select("follower")
 			if (unfollowError) throw unfollowError;
 
-			return response
-				.status(200)
-				.json(followData);
-		} else {
-			const { data: followData, error: followError } = await supabase
+			const { data, error: followError } = await supabase
 				.from("following")
-				.insert([{ follower: user, following: username }])
-				.select("follower")
+				.select("following")
+				.eq("follower", user);
 			if (followError) throw followError;
 
 			return response
 				.status(200)
-				.json(followData);
+				.send({ data, msg: "Unfollowed user" });
+		} else {
+			const { error: followError } = await supabase
+				.from("following")
+				.insert([{ follower: user, following: username }])
+			if (followError) throw followError;
+
+			const { data, error } = await supabase
+				.from("following")
+				.select()
+				.eq("follower", user);
+			if (error) throw error;
+
+			return response
+				.status(200)
+				.send({ data, msg: "Followed user" });
 		}
 	} catch (error) {
 		if (error instanceof Error) {

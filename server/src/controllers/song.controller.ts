@@ -1,5 +1,5 @@
 import axios from "axios";
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { supabase } from "../utils/supabaseClient";
 import { Song } from "../models/song.model";
 import { getUser } from "../constants";
@@ -84,6 +84,30 @@ export const getLikedSongs = async (request: Request, response: Response): Promi
 			return response.status(500).json({ msg: "Error getting liked songs" });
 		} else {
 			console.error("Error getting liked songs", error);
+			return response.status(500).json({ msg: "Unidentified error occured" });
+		}
+	}
+}
+
+export const isLiked = async (request: Request, response: Response): Promise<any> => {
+	const { song_id } = request.body;
+	const user = await getUser(request);
+	if (!user) return response.status(401).json({ msg: "Unauthorized" });
+
+	try {
+		const { data: songData, error: songError } = await supabase
+			.from("song")
+			.select()
+			.match({ song_id, user_id: user });
+		if (songError) throw songError;
+
+		return response.status(200).json({ isLiked: songData.length > 0 });
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error in isLiked", error);
+			return response.status(500).json({ msg: "Error checking if song is liked" });
+		} else {
+			console.error("Error in isLiked", error);
 			return response.status(500).json({ msg: "Unidentified error occured" });
 		}
 	}
