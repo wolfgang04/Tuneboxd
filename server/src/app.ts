@@ -31,7 +31,7 @@ redisClient.on("error", () => {
 
 // Allow production URL and any Vercel preview URLs
 const allowedOrigins = [
-	'https://tuneboxd-client.com', // Replace with your final production domain
+	'https://tuneboxd-client.vercel.app', // Replace with your final production domain
 	/\.vercel\.app$/,                     // Matches any *.vercel.app URL
 ];
 
