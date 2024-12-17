@@ -40,7 +40,7 @@ const RecommendedSongs: React.FC<Props> = ({ rec }) => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-xl font-semibold mb-4 cursor-pointer hover:underline" onClick={() => navigate("recommended-songs")}>Recommended Songs</h2>
+      <h2 className="text-xl font-semibold mb-4">Recommended Songs</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {songs.length > 0 ? (
           songs.map((song, index) => (

@@ -68,7 +68,7 @@ const Navbar = () => {
 
         <div className="flex items-center space-x-4">
           {/* Search Bar */}
-          <div className="relative">
+          {/* <div className="relative">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -88,7 +88,7 @@ const Navbar = () => {
               className="rounded-full bg-gray-100 py-1 pl-10 pr-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Search"
             />
-          </div>
+          </div> */}
 
           <img
             loading="lazy"

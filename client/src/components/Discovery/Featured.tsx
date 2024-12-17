@@ -9,7 +9,7 @@ const Featured:React.FC<Props> = ({songs}) => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-xl font-semibold mb-4 cursor-pointer hover:underline" onClick={() => navigate("featured")}>Featured</h2>
+      <h2 className="text-xl font-semibold mb-4">Featured</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {songs.length > 0 ? (
           songs.map((song, index) => (

@@ -20,7 +20,6 @@ import Privacy from "./components/Settings/Privacy";
 import Preferences from "./components/Settings/Preferences";
 import Auth from "./components/Auth/Auth";
 import Reviews from "./components/Profile/Reviews";
-import Playlists from "./components/Profile/Playlists";
 import Songs from "./components/Profile/Likes/Songs";
 import Albums from "./components/Profile/Likes/Albums";
 import Artists from "./components/Profile/Likes/Artists";
@@ -50,7 +49,6 @@ function App() {
           </Route>
           <Route path=":username/*" element={<Profile />}>
             <Route path="reviews" element={<Reviews />} />
-            <Route path="playlists" element={<Playlists />} />
             <Route path="likes/*" element={<Profile />}>
               <Route path="songs" element={<Songs />} />
               <Route path="albums" element={<Albums />} />

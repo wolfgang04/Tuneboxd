@@ -8,12 +8,6 @@ const Navigation = () => {
       }>
       Reviews
     </NavLink>
-    <NavLink to="playlists"
-      className={({ isActive }) =>
-        `w-full rounded-lg p-2 text-left font-bold ${isActive ? "bg-black text-white" : "text-gray-700 hover:bg-gray-200"}`
-      }>
-      Playlists
-    </NavLink>
     <NavLink to="likes/songs"
       className={({ isActive }) =>
         `w-full rounded-lg p-2 text-left font-bold ${isActive ? "bg-black text-white" : "text-gray-700 hover:bg-gray-200"}`
