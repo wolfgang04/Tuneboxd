@@ -29,25 +29,13 @@ redisClient.on("error", () => {
 	console.error("Redis connection error");
 });
 
-// Allow production URL and any Vercel preview URLs
-const allowedOrigins = [
-	'https://tuneboxd-client.vercel.app', // Replace with your final production domain
-	/\.vercel\.app$/,                     // Matches any *.vercel.app URL
-];
-
-const corsOptions = {
-	origin: (origin, callback) => {
-		if (!origin || allowedOrigins.some((allowed) => typeof allowed === 'string' ? allowed === origin : allowed.test(origin))) {
-			callback(null, true);
-		} else {
-			callback(new Error('Not allowed by CORS'));
-		}
-	},
-	credentials: true, // Allow credentials if necessary
-};
-
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(
+	cors({
+		origin: "https://tuneboxd-client.vercel.app",
+		credentials: true,
+	})
+);
 
 app.use(
 	session({
