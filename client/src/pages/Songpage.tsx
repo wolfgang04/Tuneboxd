@@ -23,6 +23,7 @@ const AlbumReview: React.FC = () => {
 
   // Retrieve reviews passed through navigation state or fallback to static data
   const reviews = location.state?.reviews || reviewsData;
+  const [songLikes, setSongLikes] = useState<number>(0);
 
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortOption === "highest") return b.rating - a.rating;
@@ -31,6 +32,10 @@ const AlbumReview: React.FC = () => {
     return 0;
   });
 
+  const handleSongLike = () => {
+    setSongLikes((prevLikes) => prevLikes + 1);
+  };
+
   return (
     <div className="min-h-screen bg-white text-black flex flex-col p-6">
       <div className="flex items-center space-x-4">
@@ -38,13 +43,24 @@ const AlbumReview: React.FC = () => {
         <div>
           <h1 className="text-4xl font-bold">Francesca</h1>
           <p className="text-lg text-gray-600">by Hozier</p>
+          <p className="text-lg text-gray-600">Album: Unreal Unearth</p>
           <p className="text-gray-500">Released: 2024 | Genre: Alternative/Indie</p>
+          <p className="text-gray-500">Duration: 4:30</p>
           <button
   className="mt-4 px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
   onClick={() => navigate("/pages/reviewform", { state: { reviews: reviewsData } })}
 >
   Write Review
 </button>
+<div className="mt-4">
+            <button
+              className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+              onClick={handleSongLike}
+            >
+              Like
+            </button>
+            <span className="ml-2 text-gray-700">{songLikes} Likes</span>
+          </div>
           
         </div>
       </div>

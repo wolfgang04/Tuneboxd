@@ -3,6 +3,7 @@ import UserProfile from "../components/Profile/UserProfile";
 import Playlists from "../components/Profile/Playlists";
 import Reviews from "../components/Profile/Reviews";
 import CurrentlyListening from "../components/Profile/CurrentlyListening";
+import Likes from "../components/Profile/Likes/Likes";
 import axios from "axios";
 
 export interface User {
@@ -48,6 +49,7 @@ const Profile = () => {
           <div className="ml-3 rounded-lg bg-white p-6">
             <Playlists />
             <Reviews />
+            <Likes />
           </div>
         </div>
       </div>

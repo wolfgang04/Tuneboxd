@@ -21,6 +21,7 @@ import Privacy from "./components/Settings/Privacy";
 import Preferences from "./components/Settings/Preferences";
 import Auth from "./components/Auth/Auth";
 import PlaylistPage from "./pages/Discovery/PlaylistPage";
+import AlbumPage from "./pages/Albumpage";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
         <Route path="songpage" element={<AlbumReview />} />
         <Route path="pages/Reviewform" element={<ReviewForm />} />
         <Route path="playlists/:id" element={<PlaylistPage />} />
+        <Route path="albumpage" element={<AlbumPage />} />
       </Route>
     </Routes>
   );
