@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Songs from "../components/Artist/Songs";
 import Albums from "../components/Artist/Albums";
 

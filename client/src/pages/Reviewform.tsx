@@ -7,7 +7,6 @@ const ReviewForm: React.FC = () => {
   const navigate = useNavigate();
   const prevPath = location.state.id;
 
-  const existingReviews = location.state?.reviews || [];
   const [reviewText, setReviewText] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
 
