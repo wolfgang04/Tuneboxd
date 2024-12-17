@@ -5,7 +5,8 @@
   "main": "./src/server.ts",
   "scripts": {
     "start": "nodemon ./src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "vercel-build": "echo hello"
   },
   "author": "",
   "license": "ISC",
