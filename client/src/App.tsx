@@ -11,7 +11,6 @@ import Community from "./pages/Community";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import ReviewForm from "./pages/Reviewform";
-import AlbumReview from "./pages/Songpage";
 import Login from "./pages/Auth/login";
 import SignUp from "./pages/Auth/signup";
 import ResetPass from "./pages/Auth/resetpass";
@@ -20,8 +19,13 @@ import Notifications from "./components/Settings/Notifications";
 import Privacy from "./components/Settings/Privacy";
 import Preferences from "./components/Settings/Preferences";
 import Auth from "./components/Auth/Auth";
+import Reviews from "./components/Profile/Reviews";
+import Playlists from "./components/Profile/Playlists";
+import Songs from "./components/Profile/Likes/Songs";
+import Albums from "./components/Profile/Likes/Albums";
+import Artists from "./components/Profile/Likes/Artists";
+import ArtistSongs from "./components/Artist/Songs";
 import PlaylistPage from "./pages/Discovery/PlaylistPage";
-import AlbumPage from "./pages/Albumpage";
 
 function App() {
   return (
@@ -45,12 +49,18 @@ function App() {
             <Route path="privacy" element={<Privacy />} />
             <Route path="preferences" element={<Preferences />} />
           </Route>
-          <Route path="profile" element={<Profile />} />
+          <Route path=":username/*" element={<Profile />}>
+            <Route path="reviews" element={<Reviews />} />
+            <Route path="playlists" element={<Playlists />} />
+            <Route path="likes/*" element={<Profile />}>
+              <Route path="songs" element={<Songs />} />
+              <Route path="albums" element={<Albums />} />
+              <Route path="artists" element={<Artists />} />
+            </Route>
+          </Route>
         </Route>
-        <Route path="songpage" element={<AlbumReview />} />
         <Route path="pages/Reviewform" element={<ReviewForm />} />
         <Route path="playlists/:id" element={<PlaylistPage />} />
-        <Route path="albumpage" element={<AlbumPage />} />
       </Route>
     </Routes>
   );

@@ -9,7 +9,7 @@ import {
 const router = Router();
 
 router.post("/follow", follow);
-router.get("/status", getFollowStatus);
+router.post("/status", getFollowStatus);
 router.get("/getFollowers", getFollowers);
 router.get("/getFollowing", getFollowing);
 

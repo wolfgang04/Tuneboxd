@@ -20,24 +20,26 @@ export const follow = async (
 		if (existingFollowError) throw existingFollowError;
 
 		if (existingFollow && existingFollow.length > 0) {
-			const { error: unfollowError } = await supabase
+			const { data: followData, error: unfollowError } = await supabase
 				.from("following")
 				.delete()
-				.match({ follower: user, following: username });
+				.match({ follower: user, following: username })
+				.select("follower")
 			if (unfollowError) throw unfollowError;
 
 			return response
 				.status(200)
-				.json({ msg: "Successfully unfollowed user" });
+				.json(followData);
 		} else {
-			const { error: followError } = await supabase
+			const { data: followData, error: followError } = await supabase
 				.from("following")
-				.insert([{ follower: user, following: username }]);
+				.insert([{ follower: user, following: username }])
+				.select("follower")
 			if (followError) throw followError;
 
 			return response
 				.status(200)
-				.json({ msg: "Successfully followed user" });
+				.json(followData);
 		}
 	} catch (error) {
 		if (error instanceof Error) {
@@ -59,7 +61,7 @@ export const getFollowStatus = async (
 	const user = await getUser(request);
 	if (!user) return response.status(401).json({ msg: "Unauthorized" });
 
-	const { username } = request.params;
+	const { username } = request.body;
 
 	try {
 		const { data: followData, error: followError } = await supabase

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
 	getAlbum,
 	getArtist,
+	getArtistTopAlbums,
 	getFeaturedSong,
 	getGenres,
 	getRelatedArtists,
@@ -28,5 +29,6 @@ router.get("/relatedArtists", getRelatedArtists);
 router.get("/recommendation", recommendSongs);
 router.get("/featuredSongs", getFeaturedSong);
 router.get("/recommend", recommendBasedOnSong);
+router.get("/artistTopAlbums", getArtistTopAlbums);
 
 export default router;
