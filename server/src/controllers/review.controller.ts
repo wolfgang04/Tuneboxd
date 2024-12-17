@@ -9,17 +9,16 @@ export const createReview = async (
 	const user = await getUser(req);
 	if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-	const { mediaType, content, rating } = req.body;
-	if (!rating || !mediaType)
-		return res.status(400).json({ message: "Missing required fields" });
+	const { mediatype_id, content, rating } = req.body;
 
 	try {
-		const { error } = await supabase
+		const { data, error } = await supabase
 			.from("review")
-			.insert([{ mediaType, content, rating, user_id: user }]);
+			.insert([{ mediatype: "song", content, mediatype_id, rating, user_id: user }])
+			.select();
 		if (error) throw error;
 
-		return res.status(201).json({ message: "Review created" });
+		return res.status(201).json({ data, message: "Review created" });
 	} catch (error) {
 		if (error instanceof Error) {
 			console.error("Error creating review:", error);
@@ -30,6 +29,28 @@ export const createReview = async (
 		}
 	}
 };
+
+export const getSongReviews = async (req: Request, res: Response): Promise<any> => {
+	const { song_id } = req.query;
+
+	try {
+		const { data, error } = await supabase
+			.from("review")
+			.select()
+			.match({ mediatype: "song", mediatype_id: song_id });
+		if (error) throw error;
+
+		return res.status(200).json(data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error fetching song reviews:", error);
+			return res.status(500).json({ message: error.message });
+		} else {
+			console.error("Unknown error fetching song reviews:", error);
+			return res.status(500).json({ message: "Unknown error" });
+		}
+	}
+}
 
 export const getReviews = async (req: Request, res: Response): Promise<any> => {
 	try {
@@ -52,14 +73,13 @@ export const getUserReviews = async (
 	request: Request,
 	response: Response
 ): Promise<any> => {
-	const user = await getUser(request);
-	if (!user) return response.status(401).json({ message: "Unauthorized" });
+	const { user_id } = request.query;
 
 	try {
 		const { data, error } = await supabase
 			.from("review")
 			.select()
-			.match({ user_id: user });
+		.match({ user_id });
 		if (error) throw error;
 
 		return response.status(200).json(data);

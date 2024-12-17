@@ -59,10 +59,6 @@ const GenreSong = () => {
           </tbody>
         )}
       </table>
-
-      <button className="relative left-1/2 -translate-x-1/2 rounded-md bg-[#A7A7A7] px-5 py-3 text-white hover:bg-[#7e7e7e]">
-        Next
-      </button>
     </div>
   );
 };

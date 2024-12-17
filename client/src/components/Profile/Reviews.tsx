@@ -1,26 +1,35 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Reviews = () => {
+  const [reviews, setReviews] = useState([]);
+  const user_id = useLocation().pathname.split("/")[1];
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchReviews()
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:8080/api/review/getUsers", { params: { user_id } });
+      setReviews(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Reviews</h2>
-      <div className="bg-[black] text-white p-4 rounded w-[400px]">
-        <div className="flex items-center mb-4">
-          <div className="w-10 h-10 rounded-full mr-4">
-            <img
-              src="https://simplyilm.com/wp-content/uploads/2017/08/temporary-profile-placeholder-1.jpg"
-              alt="Reviewer Profile"
-              className="w-[40px] h-[40px] bg-gray-300 rounded-full"
-            />
-          </div>
-          <p className="font-bold">Username</p>
+      {reviews.map((review: any) => (
+        <div key={review.id} className="bg-[black] text-white p-4 rounded w-[400px] mb-4 cursor-pointer"
+          onClick={() => navigate(`/track/${review.mediatype_id}`)}>
+          <p className="text-sm">{review.content}</p>
         </div>
-        <p className="text-sm">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac
-          mollis est. Pellentesque habitant morbi tristique senectus et netus
-          et malesuada fames ac turpis.
-        </p>
-      </div>
+      ))}
     </div>
   );
 };

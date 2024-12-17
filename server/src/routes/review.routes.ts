@@ -4,6 +4,7 @@ import {
 	deleteReview,
 	getReviews,
 	getSongRatings,
+	getSongReviews,
 	getUserReviews,
 } from "../controllers/review.controller";
 
@@ -14,5 +15,6 @@ router.get("/delete", deleteReview);
 router.get("/getAll", getReviews);
 router.get("/getUsers", getUserReviews);
 router.get("/rating", getSongRatings);
+router.get("/getSong", getSongReviews);
 
 export default router;

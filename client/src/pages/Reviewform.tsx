@@ -1,13 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import axios from "axios";
 
 const ReviewForm: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const prevPath = location.state.id;
 
   const existingReviews = location.state?.reviews || [];
   const [reviewText, setReviewText] = useState<string>("");
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number | null>(null);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewText(e.target.value);
@@ -17,19 +19,19 @@ const ReviewForm: React.FC = () => {
     setRating(star);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newReview = {
-      id: existingReviews.length + 1,
-      user: "HelloWorld101", // Replace with user context if available
-      rating,
-      comment: reviewText,
-      date: new Date().toISOString(),
-    };
+    try {
+      await axios.post("http://localhost:8080/api/review/create",
+        { mediatype_id: prevPath, content: reviewText, rating }, { withCredentials: true }
+      )
 
-    const updatedReviews = [...existingReviews, newReview];
-    navigate("/Songpage", { state: { reviews: updatedReviews } });
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      return;
+    }
+    navigate(`/track/${prevPath}`);
   };
 
   return (
@@ -51,7 +53,7 @@ const ReviewForm: React.FC = () => {
                 key={star}
                 type="button"
                 onClick={() => handleStarClick(star)}
-                className={`text-3xl ${rating >= star ? "text-yellow-400" : "text-gray-400"}`}
+                className={`text-3xl ${rating != null && rating >= star ? "text-yellow-400" : "text-gray-400"}`}
               >
                 ★
               </button>

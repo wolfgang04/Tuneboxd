@@ -4,22 +4,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { formatDuration } from "../components/Song/Song";
 
 interface Review {
-  id: number;
-  user: string;
+  user_id: string;
   rating: number;
-  comment: string;
-  date: string;
+  content: string;
+  created_at: string;
 }
 
 const reviewsData: Review[] = [
-  { id: 1, user: "Alice", rating: 5, comment: "Amazing album!", date: "2024-01-01" },
-  { id: 2, user: "Bob", rating: 4, comment: "Really enjoyed it.", date: "2024-02-15" },
-  { id: 3, user: "Charlie", rating: 3, comment: "It was okay.", date: "2024-03-10" },
+  { user_id: "Alice", rating: 5, content: "Amazing album!", created_at: "2024-01-01" },
+  { user_id: "Bob", rating: 4, content: "Really enjoyed it.", created_at: "2024-02-15" },
+  { user_id: "Charlie", rating: 3, content: "It was okay.", created_at: "2024-03-10" },
 ];
 
 const Track = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLiked, setIsLiked] = useState<boolean | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [track, setTrack] = useState<any>({});
   const location = useLocation();
   const trackID = location.pathname.slice(7);
@@ -28,17 +28,14 @@ const Track = () => {
   const [sortOption, setSortOption] = useState<"highest" | "lowest" | "newest">("newest");
 
   // Retrieve reviews passed through navigation state or fallback to static data
-  const reviews = location.state?.reviews || reviewsData;
-
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortOption === "highest") return b.rating - a.rating;
     if (sortOption === "lowest") return a.rating - b.rating;
-    if (sortOption === "newest") return new Date(b.date).getTime() - new Date(a.date).getTime();
+    if (sortOption === "newest") return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     return 0;
   });
 
   const handleSongLike = async () => {
-    // setSongLikes((prevLikes) => prevLikes + 1);
     const song = {
       title: track.name, song_id: trackID,
       artist: track.artists[0].name, artist_id: track.artists[0].id,
@@ -93,9 +90,20 @@ const Track = () => {
     }
   }
 
+  const fetchReviews = useCallback(async () => {
+    try {
+      const { data } = await axios.get("http://localhost:8080/api/review/getSong", { params: { song_id: trackID } });
+      console.log(data);
+      setReviews(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [trackID]);
+
   useEffect(() => {
     fetchTrack();
-    likedStatus()
+    likedStatus();
+    fetchReviews();
   }, [trackID, fetchTrack]);
 
   if (isLoading) return <p>Loading...</p>;
@@ -116,7 +124,7 @@ const Track = () => {
         <p className="text-gray-500">Duration: {formatDuration(track.duration_ms)}</p>
         <button
           className="mt-4 px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-          onClick={() => navigate("/pages/reviewform", { state: { reviews: reviewsData } })}
+          onClick={() => navigate("/reviewform", { state: { reviews: reviewsData, id: trackID } })}
         >
           Write Review
         </button>
@@ -135,7 +143,7 @@ const Track = () => {
     <div className="mt-8 flex-grow">
       <h2 className="text-2xl font-bold">Reviews</h2>
       <div className="mt-4 flex justify-between items-center">
-        <p className="text-gray-700">{reviewsData.length} Reviews</p>
+        <p className="text-gray-700">{reviews.length} Reviews</p>
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value as "highest" | "lowest" | "newest")}
@@ -149,13 +157,13 @@ const Track = () => {
 
       <div className="mt-4 space-y-4">
         {sortedReviews.map((review) => (
-          <div key={review.id} className="p-4 bg-gray-100 rounded-lg">
+          <div className="p-4 bg-gray-100 rounded-lg">
             <div className="flex justify-between items-center">
-              <p className="font-bold">{review.user}</p>
+              <p className="font-bold">{review.user_id}</p>
               <p className="text-black">{`⭐`.repeat(review.rating)}</p>
             </div>
-            <p className="mt-2 text-gray-700">{review.comment}</p>
-            <p className="mt-1 text-sm text-gray-500">{new Date(review.date).toDateString()}</p>
+            <p className="mt-2 text-gray-700">{review.content}</p>
+            <p className="mt-1 text-sm text-gray-500">{new Date(review.created_at).toDateString()}</p>
           </div>
         ))}
       </div>

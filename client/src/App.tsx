@@ -57,7 +57,7 @@ function App() {
               <Route path="artists" element={<Artists />} />
             </Route>
           </Route>
-          <Route path="pages/Reviewform" element={<ReviewForm />} />
+          <Route path="reviewform" element={<ReviewForm />} />
           <Route path="playlist/:id" element={<PlaylistPage />} />
         </Route>
       </Route>

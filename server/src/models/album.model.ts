@@ -4,5 +4,4 @@ export interface Album {
 	artist_id: string;
 	cover: string;
 	album_id: string;
-	release_date: string;
 }

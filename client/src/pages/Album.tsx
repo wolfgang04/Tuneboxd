@@ -46,7 +46,6 @@ const Album = () => {
       artist_id: album.artists[0].id,
       cover: album.images[0].url,
       album_id: albumID,
-      release_date: album.release_date,
     };
 
     if (!isLiked) {
