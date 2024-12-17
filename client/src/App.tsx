@@ -47,9 +47,9 @@ function App() {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="songpage" element={<AlbumReview />} />
+        <Route path="pages/Reviewform" element={<ReviewForm />} />
+        <Route path="playlists/:id" element={<PlaylistPage />} />
       </Route>
-      <Route path="pages/Reviewform" element={<ReviewForm />} />
-      <Route path="playlists/:id" element={<PlaylistPage />} />
     </Routes>
   );
 }
