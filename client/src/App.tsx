@@ -2,7 +2,6 @@ import Navbar from "./components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard";
 import { Routes, Route } from "react-router-dom";
 import Genres from "./pages/Discovery/Genres";
-import Discovery from "./pages/Discovery/Discovery";
 import GenreSong from "./pages/Discovery/GenreSong";
 import Artist from "./pages/Artist";
 import Album from "./pages/Album";
@@ -24,6 +23,7 @@ import Songs from "./components/Profile/Likes/Songs";
 import Albums from "./components/Profile/Likes/Albums";
 import Artists from "./components/Profile/Likes/Artists";
 import PlaylistPage from "./pages/Discovery/PlaylistPage";
+import Discovery from "./pages/Discovery/Discovery";
 
 function App() {
   return (

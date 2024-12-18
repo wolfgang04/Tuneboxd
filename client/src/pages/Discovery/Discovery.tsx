@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MusicGenres from '../../components/Discovery/MusicGenres';
 import Featured from '../../components/Discovery/Featured';
 import RecommendedSongs from '../../components/Discovery/RecommendedSongs';
-import ExplorePlaylists from '../../components/Discovery/ExplorePlaylists';
 import axios from "axios";
 
 const Discovery = () => {
@@ -23,7 +22,6 @@ const Discovery = () => {
 
         const { data: topData } = await axios.get("http://localhost:8080/api/spotify/featuredSongs", { params: { featured: songNames } });
         setTopNames(topData.tracks);
-        console.log(topData);
       } else {
         console.error("Unexpected data structure:", data);
       }
@@ -47,11 +45,6 @@ const Discovery = () => {
       {/* Recommended Songs Section */}
       <section className="mb-12">
         <RecommendedSongs rec={recommendedSongs} />
-      </section>
-
-      {/* Explore Playlists Section */}
-      <section>
-        <ExplorePlaylists />
       </section>
     </div>
   );
