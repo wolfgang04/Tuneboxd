@@ -160,7 +160,7 @@ const Track = () => {
         {sortedReviews.map((review) => (
           <div className="p-4 bg-gray-100 rounded-lg">
             <div className="flex justify-between items-center">
-              <p className="font-bold">{review.user_id}</p>
+              <p className="font-bold cursor-pointer hover:underline" onClick={() => navigate(`/${review.user_id}`)}>{review.user_id}</p>
               <p className="text-black">{`⭐`.repeat(review.rating)}</p>
             </div>
             <p className="mt-2 text-gray-700">{review.content}</p>

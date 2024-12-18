@@ -1,7 +1,5 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import server from '../../SERVER';
 
 interface TrendingSong {
   rank: string;
@@ -31,37 +29,8 @@ const TrendingSongItem: React.FC<TrendingSong> = ({ rank, title, artist, imageUr
   </div>
 };
 
-const TrendingSongHits: React.FC = () => {
-  const [trendingSongs, setTrendingSongs] = React.useState<TrendingSong[]>([]);
+const TrendingSongHits: React.FC<{ trendingSongs: TrendingSong[] }> = ({ trendingSongs }) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchTrendingSongs()
-  }, []);
-
-  const fetchTrendingSongs = async () => {
-    try {
-      const { data } = await axios.get(`${server}lastfm/topSongs`);
-      const songs = data.song.tracks.track.slice(0, 6);
-      const songNames = songs.map((song: any) => song.name);
-
-      const { data: topData } = await axios.get(`${server}spotify/featuredSongs`, { params: { featured: songNames } });
-      setTrendingSongs(topData.tracks.map((track: any, index: number) => {
-        return {
-          rank: `${index + 1}`.padStart(2, '0'),
-          title: track.name,
-          artist: track.artists[0].name,
-          imageUrl: track.album.images[0].url,
-          artistId: track.artists[0].id,
-          songId: track.id,
-          song: track.name
-        }
-      }));
-
-    } catch (error) {
-      console.error("Error fetching trending songs: ", error);
-    }
-  }
 
   return (
     <section className="mt-16 max-md:mt-10">

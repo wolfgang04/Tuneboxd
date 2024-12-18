@@ -53,7 +53,7 @@ const RecommendedSongs: React.FC<Props> = ({ rec }) => {
                 style={{ backgroundImage: `url(${song.album.images[0].url})`, backgroundSize: "cover" }}
               ></div>
               <div className="flex-1">
-                <p className="font-medium cursor-pointer hover:underline" onClick={() => navigate(`/tracks/${song.id}`, { state: song.name })}>{song.name}</p>
+                <p className="font-medium cursor-pointer hover:underline" onClick={() => navigate(`/track/${song.id}`, { state: song.name })}>{song.name}</p>
                 <p className="text-sm text-gray-500 cursor-pointer hover:underline"
                   onClick={() => navigate(`/artist/${song.artists[0].id}`, { state: song.artists[0].name })}>{song.artists[0].name}</p>
               </div>

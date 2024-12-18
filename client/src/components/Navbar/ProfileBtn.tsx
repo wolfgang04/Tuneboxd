@@ -16,7 +16,8 @@ const ProfileBtn: React.FC<Props> = ({ isOpen }) => {
       const res = await axios.get(`${server}api/user/status`, {
         withCredentials: true,
       });
-
+      console.log(res.data);
+      
       navigate(`/${res.data.user}`);
     } catch (error) {
       console.error(error);
