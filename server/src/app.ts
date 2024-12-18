@@ -12,6 +12,9 @@ import reviewRoutes from "./routes/review.routes";
 import playlistRoutes from "./routes/playlist.routes";
 import followRoutes from "./routes/follow.routes";
 import lastfmRoutes from "./routes/lastfm.routes";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app: express.Application = express();
 
