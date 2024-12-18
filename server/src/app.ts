@@ -18,7 +18,11 @@ dotenv.config();
 
 const app: express.Application = express();
 
-const redisClient = new Redis(process.env.REDIS_URL);
+const options = {
+	lazyConnect: true, // Only connect when the first command is issued
+};
+
+const redisClient = new Redis(process.env.REDIS_URL, options);
 
 redisClient.on("connect", () => {
 	console.log("Connected to redis");
