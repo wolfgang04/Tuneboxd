@@ -23,8 +23,6 @@ const Navbar = () => {
 
       setUser(res.data[0].username);
       setUserImage(res.data[0].image);
-      console.log(res.data);
-      
     } catch (error) {
       console.error(error);
     } finally {
@@ -72,28 +70,6 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          {/* Search Bar */}
-          <div className="relative">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="16.5" y1="16.5" x2="22" y2="22"></line>
-            </svg>
-            <input
-              type="text"
-              placeholder="Search"
-              className="rounded-full bg-gray-100 py-1 pl-10 pr-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="Search"
-            />
-          </div>
 
           <img
             loading="lazy"
@@ -120,7 +96,7 @@ const Navbar = () => {
                 />
               </button>
 
-              {isOpen && <ProfileBtn isOpen={isOpen} user={user!} />}
+              {(isOpen && user !== null) && <ProfileBtn isOpen={isOpen} user={user!} />}
             </>
           )}
         </div>
