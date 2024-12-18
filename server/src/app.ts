@@ -39,6 +39,8 @@ redisClient.on("error", () => {
 	console.error("Redis connection error");
 });
 
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(
 	cors({
