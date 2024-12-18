@@ -24,6 +24,7 @@ import Songs from "./components/Profile/Likes/Songs";
 import Albums from "./components/Profile/Likes/Albums";
 import Artists from "./components/Profile/Likes/Artists";
 import PlaylistPage from "./pages/Discovery/PlaylistPage";
+import Auth from "./components/Auth/Auth";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/resetpass" element={<ResetPass />} />
       <Route path="/" element={<Navbar />}>
-        {/* <Route element={<Auth />}> */}
+        <Route element={<Auth />}>
           <Route index element={<Dashboard />} />
           <Route path="discovery" element={<Discovery />} />
           <Route path="discovery/genres" element={<Genres />} />
@@ -59,7 +60,7 @@ function App() {
           <Route path="reviewform" element={<ReviewForm />} />
           <Route path="playlist/:id" element={<PlaylistPage />} />
         </Route>
-      {/* </Route> */}
+      </Route>
     </Routes>
   );
 }
