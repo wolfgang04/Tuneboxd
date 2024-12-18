@@ -14,8 +14,6 @@ const ProfileBtn: React.FC<Props> = ({ isOpen, user }) => {
   const handleProfileClick = () => {
     // Handle profile click
     try {
-      console.log(user);
-      
       navigate(`/${user}`);
     } catch (error) {
       console.error(error);

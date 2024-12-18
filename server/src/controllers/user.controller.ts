@@ -232,3 +232,26 @@ export const forgotPassword = async (request: Request, response: Response): Prom
 		}
 	}
 }
+
+export const fetchUserEmail = async (request: Request, response: Response): Promise<any> => {
+	const username = await getUser(request);
+	if (!username) return response.status(401).send("Unauthorized");
+
+	try {
+		const { data: userData, error: userError } = await supabase
+			.from("user")
+			.select("username, email")
+			.eq("username", username);
+		if (userError) throw userError;
+
+		return response.json(userData);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error("Error in fetch email", error);
+			return response.status(500).json({ msg: "Error fetching email" });
+		} else {
+			console.error("Error in fetch email", error);
+			return response.status(500).json({ msg: "Unidentified error occured" });
+		}
+	}
+}

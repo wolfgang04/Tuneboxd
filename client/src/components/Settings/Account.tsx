@@ -13,10 +13,11 @@ const Account = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get(`${server}user/details`, {
+      const res = await axios.get(`${server}user/userEmail`, {
         withCredentials: true,
       });
 
+      console.log(res.data);
       const { username, email } = res.data[0];
       setUsername(username);
       setEmail(email);
