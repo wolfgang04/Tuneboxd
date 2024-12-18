@@ -34,7 +34,7 @@ const TrendingSongHits: React.FC<{ trendingSongs: TrendingSong[] }> = ({ trendin
 
   return (
     <section className="mt-16 max-md:mt-10">
-      <h2 data-layername="trendingSongHits" className="self-start ml-10 text-4xl font-bold text-black max-md:ml-2.5 cursor-pointer hover:underline" onClick={() => navigate("/trending-songs")}>
+      <h2 data-layername="trendingSongHits" className="self-start ml-10 text-4xl font-bold text-black max-md:ml-2.5">
         Trending Song Hits
       </h2>
       <div className="flex flex-wrap gap-2.5 self-center mt-5 w-full text-white max-w-[1520px] max-md:max-w-full">
