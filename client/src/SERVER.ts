@@ -1,3 +1,3 @@
-const server = "https://tuneboxd-lmpx-serverr.vercel.app/api/";
+const server = "https://tuneboxd-server.vercel.app/api/";
 
 export default server
