@@ -18,7 +18,6 @@ import Account from "./components/Settings/Account";
 import Notifications from "./components/Settings/Notifications";
 import Privacy from "./components/Settings/Privacy";
 import Preferences from "./components/Settings/Preferences";
-import Auth from "./components/Auth/Auth";
 import Reviews from "./components/Profile/Reviews";
 import Playlists from "./components/Profile/Playlists";
 import Songs from "./components/Profile/Likes/Songs";
