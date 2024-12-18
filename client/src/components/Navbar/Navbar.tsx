@@ -6,6 +6,7 @@ import server from "../../SERVER";
 
 const Navbar = () => {
   const [userImage, setUserImage] = useState<string | null>(null);
+  const [user, setUser] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Navbar = () => {
         withCredentials: true,
       });
 
+      setUser(res.data[0].username);
       setUserImage(res.data[0].image);
     } catch (error) {
       console.error(error);
@@ -116,7 +118,7 @@ const Navbar = () => {
                 />
               </button>
 
-              {isOpen && <ProfileBtn isOpen={isOpen} />}
+              {isOpen && <ProfileBtn isOpen={isOpen} user={user!} />}
             </>
           )}
         </div>

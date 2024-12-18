@@ -5,20 +5,16 @@ import server from "../../SERVER";
 
 interface Props {
   isOpen: boolean;
+  user: string;
 }
 
-const ProfileBtn: React.FC<Props> = ({ isOpen }) => {
+const ProfileBtn: React.FC<Props> = ({ isOpen, user }) => {
   const navigate = useNavigate();
 
-  const handleProfileClick = async () => {
+  const handleProfileClick = () => {
     // Handle profile click
     try {
-      const res = await axios.get(`${server}api/user/status`, {
-        withCredentials: true,
-      });
-      console.log(res.data);
-      
-      navigate(`/${res.data.user}`);
+      navigate(`/${user}`);
     } catch (error) {
       console.error(error);
     }

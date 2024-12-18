@@ -153,7 +153,7 @@ export const fetchUserImage = async (request: Request, response: Response): Prom
 	try {
 		const { data: userData, error: userError } = await supabase
 			.from("user")
-			.select("image")
+			.select("image, username")
 			.eq("username", username);
 		if (userError) throw userError;
 
