@@ -5,6 +5,7 @@ import axios from "axios";
 import server from "../../SERVER";
 
 const Login: React.FC = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const res = await axios.post(
         `${server}user/login`,
         {
@@ -33,6 +35,8 @@ const Login: React.FC = () => {
       if (res.status === 200) navigate("/");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,7 +71,7 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => handleChangePassword(e)}
           />
-          
+
           <div className={styles.options}>
             <Link to="/resetpass" className="text-sm">
               Forgot Password?
@@ -75,12 +79,12 @@ const Login: React.FC = () => {
           </div>
 
           <button type="submit" className={styles.signInButton}>
-            Log In
+            {isLoading ? "Loading..." : "Log In"}
           </button>
         </form>
 
         <p className={`${styles.signupText} cursor-pointer hover:underline`}>
-          You don't have an account? <Link to="/signup">Sign up</Link>
+          <Link to="/signup"> You don't have an account? Sign up</Link>
         </p>
 
         <footer className={styles.footer}>© 2024 ALL RIGHTS RESERVED</footer>
