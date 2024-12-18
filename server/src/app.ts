@@ -20,6 +20,9 @@ const app: express.Application = express();
 
 const options = {
 	lazyConnect: true, // Only connect when the first command is issued
+	tls: {
+		rejectUnauthorized: false, // Disable strict certificate checks (often required for Upstash)
+	},
 };
 
 const redisClient = new Redis(process.env.REDIS_URL, options);

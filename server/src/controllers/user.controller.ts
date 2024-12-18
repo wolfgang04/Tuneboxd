@@ -86,6 +86,7 @@ export const login = async (
 		const isMatch = await bcrypt.compare(password, userData[0].password);
 		if (isMatch) {
 			request.session.user = loweredUsername;
+			console.log(request.session.user);
 			return response.status(200).json({ msg: "Successfully logged in" });
 		} else {
 			return response.status(401).json({ msg: "Invalid credentials" });
