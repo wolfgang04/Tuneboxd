@@ -23,6 +23,8 @@ const Navbar = () => {
 
       setUser(res.data[0].username);
       setUserImage(res.data[0].image);
+      console.log(res.data);
+      
     } catch (error) {
       console.error(error);
     } finally {

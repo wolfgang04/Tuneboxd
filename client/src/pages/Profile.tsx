@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import UserProfile from "../components/Profile/UserProfile";
-import Playlists from "../components/Profile/Playlists";
 import Reviews from "../components/Profile/Reviews";
 import axios from "axios";
 import Navigation from "../components/Profile/Navigation";
@@ -67,7 +66,6 @@ const Profile = () => {
               <Routes>
                 <Route path="/" element={<Navigate to="reviews" />} />
                 <Route path="reviews" element={<Reviews />} />
-                <Route path="playlists" element={<Playlists />} />
                 <Route path="/likes/songs" element={<Songs />} />
                 <Route path="/likes/albums" element={<Albums />} />
                 <Route path="/likes/artists" element={<Artists />} />
