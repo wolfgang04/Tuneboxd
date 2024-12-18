@@ -4,7 +4,7 @@ import server from "../../SERVER";
 
 const Account = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -23,6 +23,8 @@ const Account = () => {
       setEmail(email);
     } catch (error) {
       console.error("Failed to fetch user data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,6 +60,8 @@ const Account = () => {
     // console.log("Saved changes:", { username, email, password });
   };
 
+  if (isLoading) return <p>Loading...</p>
+  
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Account Settings</h2>
