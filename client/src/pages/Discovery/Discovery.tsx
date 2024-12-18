@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import MusicGenres from '../../components/Discovery/MusicGenres';
 import Featured from '../../components/Discovery/Featured';
 import RecommendedSongs from '../../components/Discovery/RecommendedSongs';
-import ExplorePlaylists from '../../components/Discovery/ExplorePlaylists';
 import axios from "axios";
 import server from "../../SERVER";
 
@@ -51,9 +50,6 @@ const Discovery = () => {
       </section>
 
       {/* Explore Playlists Section */}
-      <section>
-        <ExplorePlaylists />
-      </section>
     </div>
   );
 };

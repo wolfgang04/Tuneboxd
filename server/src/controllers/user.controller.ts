@@ -68,8 +68,6 @@ export const login = async (
 ): Promise<any> => {
 	const { username, password } = request.body;
 	const loweredUsername = username.toLowerCase();
-	console.log(username);
-	
 
 	if (!username || !password) {
 		return response.status(400).json({ msg: "All fields are required" });
