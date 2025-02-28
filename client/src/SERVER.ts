@@ -1,3 +1,3 @@
-const server = "https://tuneboxd-server.vercel.app/api/";
+const server = "http://localhost:8080/";
 
-export default server
+export default server;

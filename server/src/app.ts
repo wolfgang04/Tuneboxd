@@ -15,54 +15,58 @@ import lastfmRoutes from "./routes/lastfm.routes";
 import dotenv from "dotenv";
 
 dotenv.config();
+const { UPSTASH_URL, UPSTASH_TOKEN } = process.env;
 
 const app: express.Application = express();
 
 const options = {
-	lazyConnect: true, // Only connect when the first command is issued
-	tls: {
-		rejectUnauthorized: false,
-	},
+  // lazyConnect: true, // Only connect when the first command is issued
+  tls: {
+    rejectUnauthorized: false,
+  },
 };
 
-const redisClient = new Redis(process.env.REDIS_URL, options);
+const redisClient = new Redis(
+  `rediss://default:${UPSTASH_TOKEN}@${UPSTASH_URL}:6379`,
+  options
+);
 
 redisClient.on("connect", () => {
-	console.log("Connected to redis");
+  console.log("Connected to redis");
 });
 
 redisClient.on("ready", () => {
-	console.log("Redis connection ready");
+  console.log("Redis connection ready");
 });
 
 redisClient.on("error", () => {
-	console.error("Redis connection error");
+  console.error("Redis connection error");
 });
 
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 app.use(express.json());
 app.use(
-	cors({
-		origin: "https://tuneboxd-client.vercel.app",
-		credentials: true,
-	})
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
 );
 
 app.use(
-	session({
-		name: "qid",
-		store: new RedisStore({ client: redisClient, disableTouch: true }),
-		cookie: {
-			maxAge: 1000 * 60 * 60 * 24,
-			httpOnly: true,
-			secure: true,
-			sameSite: "none",
-		},
-		saveUninitialized: false,
-		secret: process.env.SECRET || "SECRET",
-		resave: false,
-	})
+  session({
+    name: "qid",
+    store: new RedisStore({ client: redisClient, disableTouch: true }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    },
+    saveUninitialized: false,
+    secret: process.env.SECRET || "SECRET",
+    resave: false,
+  })
 );
 
 app.use("/api/user", userRoutes);

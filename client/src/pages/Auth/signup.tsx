@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/Login.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import server from "../../SERVER";
 
@@ -30,6 +30,7 @@ const SignUp = () => {
   };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Signing up...");
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -45,7 +46,10 @@ const SignUp = () => {
         confirmPassword,
       });
 
-      if (res.status === 201) navigate("/");
+      if (res.status === 201) {
+        navigate("/");
+        alert("Account created successfully!");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -104,6 +108,10 @@ const SignUp = () => {
           <button type="submit" className={styles.signInButton}>
             Sign Up
           </button>
+
+          <p className={`${styles.signupText} cursor-pointer hover:underline`}>
+            <Link to="/login"> Already have an account? Login</Link>
+          </p>
         </form>
 
         <footer className={styles.footer}>© 2024 ALL RIGHTS RESERVED</footer>
