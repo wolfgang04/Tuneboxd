@@ -12,10 +12,7 @@ import reviewRoutes from "./routes/review.routes";
 import playlistRoutes from "./routes/playlist.routes";
 import followRoutes from "./routes/follow.routes";
 import lastfmRoutes from "./routes/lastfm.routes";
-import dotenv from "dotenv";
-
-dotenv.config();
-const { UPSTASH_URL, UPSTASH_TOKEN } = process.env;
+import { CLIENT_URL, SECRET, UPSTASH_TOKEN, UPSTASH_URL } from "./constants";
 
 const app: express.Application = express();
 
@@ -26,10 +23,8 @@ const options = {
   },
 };
 
-const redisClient = new Redis(
-  `rediss://default:${UPSTASH_TOKEN}@${UPSTASH_URL}:6379`,
-  options
-);
+const redisCredentials = `rediss://default:${UPSTASH_TOKEN}@${UPSTASH_URL}:6379`;
+const redisClient = new Redis(redisCredentials, options);
 
 redisClient.on("connect", () => {
   console.log("Connected to redis");
@@ -39,8 +34,8 @@ redisClient.on("ready", () => {
   console.log("Redis connection ready");
 });
 
-redisClient.on("error", () => {
-  console.error("Redis connection error");
+redisClient.on("error", (err) => {
+  console.error("Redis connection error:", err);
 });
 
 app.set("trust proxy", 1);
@@ -48,7 +43,7 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -64,7 +59,7 @@ app.use(
       sameSite: "none",
     },
     saveUninitialized: false,
-    secret: process.env.SECRET || "SECRET",
+    secret: SECRET,
     resave: false,
   })
 );

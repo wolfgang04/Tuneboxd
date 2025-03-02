@@ -11,6 +11,9 @@ export const clientID = process.env.SPOTIFY_CLIENT_ID;
 export const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 export const LASTFM_API_KEY = process.env.LASTFM_API_KEY;
 export const LASTFM_SECRET = process.env.LASTFM_API_SECRET;
+export const { UPSTASH_URL, UPSTASH_TOKEN } = process.env;
+export const SECRET = process.env.SECRET || "SECRET";
+export const CLIENT_URL = process.env.CLIENT_URL;
 
 export const getUser = async (request: Request): Promise<string | undefined> =>
-	request.session.user;
+  request.session.user;

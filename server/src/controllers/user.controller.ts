@@ -1,10 +1,7 @@
 import { request, Request, Response } from "express";
 import { supabase } from "../utils/supabaseClient";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
 import { getUser, saltRounds } from "../constants";
-
-dotenv.config();
 
 declare module "express-session" {
   interface SessionData {
@@ -25,7 +22,6 @@ export const signup = async (
   const { username, email, password, confirmPassword } = request.body;
   console.log(username, email, password);
   const loweredUsername = username.toLowerCase();
-  const saltRounds = Number(process.env.SALT_ROUNDS!);
 
   if (!username || !email || !password || !confirmPassword)
     return response.status(400).json({ msg: "All fields are required" });
@@ -39,13 +35,13 @@ export const signup = async (
   try {
     const hash: string = await bcrypt.hash(password, saltRounds);
 
-    const { data: signupData, error: signupError } = await supabase
+    const { data, error: signupError } = await supabase
       .from("user")
       .insert([{ username: loweredUsername, email, password: hash }]);
     if (signupError) throw signupError;
 
     request.session.user = username;
-    console.log("User created:", signupData);
+    console.log("User created");
     return response.status(201).json({ msg: "Successfully created user" });
   } catch (error) {
     if (error instanceof Error) {
