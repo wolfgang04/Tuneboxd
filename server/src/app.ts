@@ -34,8 +34,8 @@ redisClient.on("ready", () => {
   console.log("Redis connection ready");
 });
 
-redisClient.on("error", (err) => {
-  console.error("Redis connection error:", err);
+redisClient.on("error", () => {
+  console.error("Redis connection error");
 });
 
 app.set("trust proxy", 1);
@@ -43,7 +43,7 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: CLIENT_URL,
     credentials: true,
   })
 );
