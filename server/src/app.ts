@@ -26,6 +26,8 @@ const options = {
 const redisCredentials = `rediss://default:${UPSTASH_TOKEN}@${UPSTASH_URL}:6379`;
 const redisClient = new Redis(redisCredentials, options);
 
+// const redisClient = new Redis();
+
 redisClient.on("connect", () => {
   console.log("Connected to redis");
 });
@@ -55,8 +57,8 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
     saveUninitialized: false,
     secret: SECRET,
