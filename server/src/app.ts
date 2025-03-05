@@ -26,8 +26,6 @@ const options = {
 const redisCredentials = `rediss://default:${UPSTASH_TOKEN}@${UPSTASH_URL}:6379`;
 const redisClient = new Redis(redisCredentials, options);
 
-// const redisClient = new Redis();
-
 redisClient.on("connect", () => {
   console.log("Connected to redis");
 });
