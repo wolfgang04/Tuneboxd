@@ -9,11 +9,11 @@ const Songs: React.FC<{ topSongs: any }> = ({ topSongs }) => {
     <section className="mb-12">
       <h2 className="mb-6 text-2xl font-semibold">Popular Songs</h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {topSongs.map((song: any, index: number) => {
+        {topSongs.map((song: any) => {
           const imageUrl = song.album.images[0]?.url || "";
           return (
             <div
-              key={index}
+              key={song.id} // Ensure the key is unique
               className="flex flex-col justify-end rounded-3xl bg-stone-900 text-white transition-colors duration-200 hover:bg-stone-800"
               style={{
                 height: "230px",

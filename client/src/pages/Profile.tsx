@@ -24,16 +24,22 @@ const Profile = () => {
 
   const fetchUserDetails = useCallback(async () => {
     try {
-      const res = await axios.post(`${server}user/details`, { user: username }, {
+      const res = await axios.post(
+        `${server}user/details`,
+        { user: username },
+        {
+          withCredentials: true,
+        },
+      );
+      const { data: user } = await axios.get(`${server}user/status`, {
         withCredentials: true,
       });
-      const { data: user } = await axios.get(`${server}user/status`, { withCredentials: true });
 
       setUser(res.data);
       setIsUser(user.user);
     } catch (error) {
       console.error(error);
-      setUser(null)
+      setUser(null);
     } finally {
       setIsLoading(false);
     }

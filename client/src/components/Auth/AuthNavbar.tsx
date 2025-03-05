@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import server from "../../SERVER";
 import Navbar from "../Navbar/Navbar";
 
@@ -25,7 +25,6 @@ const AuthNavbar = () => {
   return (
     <>
       <Navbar />
-      <Outlet />
     </>
   );
 };
