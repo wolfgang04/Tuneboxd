@@ -1,4 +1,4 @@
-import Navbar from "./components/Navbar/Navbar";
+import AuthNavbar from "./components/Auth/AuthNavbar";
 import Dashboard from "./pages/Dashboard";
 import { Routes, Route } from "react-router-dom";
 import Genres from "./pages/Discovery/Genres";
@@ -24,7 +24,6 @@ import Songs from "./components/Profile/Likes/Songs";
 import Albums from "./components/Profile/Likes/Albums";
 import Artists from "./components/Profile/Likes/Artists";
 import PlaylistPage from "./pages/Discovery/PlaylistPage";
-import Auth from "./components/Auth/Auth";
 
 function App() {
   return (
@@ -32,34 +31,32 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/resetpass" element={<ResetPass />} />
-      <Route path="/" element={<Navbar />}>
-        <Route element={<Auth />}>
-          <Route index element={<Dashboard />} />
-          <Route path="discovery" element={<Discovery />} />
-          <Route path="discovery/genres" element={<Genres />} />
-          <Route path="discovery/genres/:genre" element={<GenreSong />} />
-          <Route path="community" element={<Community />} />
-          <Route path="artist/:id" element={<Artist />} />
-          <Route path="album/:id" element={<Album />} />
-          <Route path="track/:id" element={<Track />} />
-          <Route path="settings/*" element={<Settings />}>
-            <Route path="account" element={<Account />} />
-            <Route path="notifications" element={<Notifications />} />
-            <Route path="privacy" element={<Privacy />} />
-            <Route path="preferences" element={<Preferences />} />
-          </Route>
-          <Route path=":username/*" element={<Profile />}>
-            <Route path="reviews" element={<Reviews />} />
-            <Route path="playlists" element={<Playlists />} />
-            <Route path="likes/*" element={<Profile />}>
-              <Route path="songs" element={<Songs />} />
-              <Route path="albums" element={<Albums />} />
-              <Route path="artists" element={<Artists />} />
-            </Route>
-          </Route>
-          <Route path="reviewform" element={<ReviewForm />} />
-          <Route path="playlist/:id" element={<PlaylistPage />} />
+      <Route path="/" element={<AuthNavbar />}>
+        <Route index element={<Dashboard />} />
+        <Route path="discovery" element={<Discovery />} />
+        <Route path="discovery/genres" element={<Genres />} />
+        <Route path="discovery/genres/:genre" element={<GenreSong />} />
+        <Route path="community" element={<Community />} />
+        <Route path="artist/:id" element={<Artist />} />
+        <Route path="album/:id" element={<Album />} />
+        <Route path="track/:id" element={<Track />} />
+        <Route path="settings/*" element={<Settings />}>
+          <Route path="account" element={<Account />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="privacy" element={<Privacy />} />
+          <Route path="preferences" element={<Preferences />} />
         </Route>
+        <Route path=":username/*" element={<Profile />}>
+          <Route path="reviews" element={<Reviews />} />
+          <Route path="playlists" element={<Playlists />} />
+          <Route path="likes/*" element={<Profile />}>
+            <Route path="songs" element={<Songs />} />
+            <Route path="albums" element={<Albums />} />
+            <Route path="artists" element={<Artists />} />
+          </Route>
+        </Route>
+        <Route path="reviewform" element={<ReviewForm />} />
+        <Route path="playlist/:id" element={<PlaylistPage />} />
       </Route>
     </Routes>
   );

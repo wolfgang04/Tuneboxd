@@ -2,8 +2,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import server from "../../SERVER";
+import Navbar from "../Navbar/Navbar";
 
-const Auth = () => {
+const AuthNavbar = () => {
   const navigate = useNavigate();
 
   const checkStatus = async () => {
@@ -23,9 +24,10 @@ const Auth = () => {
 
   return (
     <>
+      <Navbar />
       <Outlet />
     </>
   );
 };
 
-export default Auth;
+export default AuthNavbar;

@@ -22,7 +22,7 @@ const ProfileBtn: React.FC<Props> = ({ isOpen, user }) => {
 
   const handleLogoutClick = async () => {
     try {
-      const res = await axios.get(`${server}api/user/logout`, {
+      const res = await axios.get(`${server}user/logout`, {
         withCredentials: true,
       });
 

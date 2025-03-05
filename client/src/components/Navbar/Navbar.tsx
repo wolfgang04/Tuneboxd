@@ -38,7 +38,12 @@ const Navbar = () => {
     <>
       <nav className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2">
         <div className="flex items-center space-x-4">
-          <span className="font-jersey text-2xl font-bold cursor-pointer" onClick={() => navigate("/")}>Tuneboxd</span>
+          <span
+            className="cursor-pointer font-jersey text-2xl font-bold"
+            onClick={() => navigate("/")}
+          >
+            Tuneboxd
+          </span>
         </div>
 
         {/* Navigation Links */}
@@ -70,7 +75,6 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/cabc297cbddaed741a7d0683949e38f49f3c127e9c8499c49bb38b12aa7f1dea?placeholderIfAbsent=true&apiKey=73641803e2624e9f9f9030f4043fd88e"
@@ -96,7 +100,9 @@ const Navbar = () => {
                 />
               </button>
 
-              {(isOpen && user !== null) && <ProfileBtn isOpen={isOpen} user={user!} />}
+              {isOpen && user !== null && (
+                <ProfileBtn isOpen={isOpen} user={user!} />
+              )}
             </>
           )}
         </div>
