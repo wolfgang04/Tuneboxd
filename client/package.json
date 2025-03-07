@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/server.ts",
+  "homepage": "https://tuneboxd.vercel.app/",
   "scripts": {
     "start": "vite",
     "dev": "vite",
