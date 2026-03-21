@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./client/public/Tuneboxd.png" alt="Tuneboxd Logo" width="320" />
-  <h3>Your music journal. Your community. Your soundtrack.</h3>
+  <h3>A React/Node.js social music platform — users can discover music by genre, write reviews, rate tracks and albums, and follow friends, while the Spotify and Last.fm APIs power personalized recommendations, artist pages, and real-time trending content.</h3>
 </div>
 
 ---
